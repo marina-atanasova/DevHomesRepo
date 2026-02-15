@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}All Listings | DevHomes{% endblock %}
+{% block content %}
+  <h1>All Listings</h1>
+
+  {% if listings %}
+    <div class="grid">
+      {% for p in listings %}
+        <div class="card">
+          <h2>{{ p.address }}</h2>
+          <p><strong>Price:</strong> {{ p.price }}</p>
+          <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
+          <p><strong>Bathrooms:</strong> {{ p.bathrooms }} | <strong>Balconies:</strong> {{ p.balconies }}</p>
+          <p><strong>District:</strong> {{ p.district }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card"><p>No listings yet.</p></div>
+  {% endif %}
+{% endblock %}

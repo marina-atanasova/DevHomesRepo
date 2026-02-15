@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}DevHomes{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container nav-inner">
+    <div class="brand">
+      <a href="{% url 'home' %}">DevHomes</a>
+    </div>
+
+    <nav class="nav-links">
+      <a class="nav-link" href="{% url 'home' %}">Homepage</a>
+      <a class="nav-link" href="{% url 'listings:all' %}">View all listings</a>
+      <a class="nav-link" href="{% url 'listings:search' %}">Search</a>
+      <a class="nav-link" href="{% url 'listings:add' %}">Add listing</a>
+      <a class="nav-link" href="{% url 'contact' %}">Contact form</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>
