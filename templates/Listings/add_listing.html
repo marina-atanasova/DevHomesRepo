@@ -1,8 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Add Listing | DevHomes{% endblock %}
+
+{% block title %}Add New Listing | DevHomes{% endblock %}
+
 {% block content %}
-  <div class="card">
-    <h1>Add listing</h1>
-    <p>Add New Listing Form</p>
-  </div>
+<div class="card">
+  <h1>Add New Listing</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <div class="errors">
+          {{ field.errors }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <button type="submit" class="btn">Create Listing</button>
+  </form>
+</div>
 {% endblock %}

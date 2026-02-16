@@ -9,9 +9,13 @@
         <div class="card">
           <h2>{{ p.address }}</h2>
           <p><strong>Price:</strong> {{ p.price }}</p>
+            <p><strong>ID:</strong> {{ p.pk }}</p>
+
           <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
           <p><strong>Bathrooms:</strong> {{ p.bathrooms }} | <strong>Balconies:</strong> {{ p.balconies }}</p>
           <p><strong>District:</strong> {{ p.district }}</p>
+            <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>
+
         </div>
       {% endfor %}
     </div>

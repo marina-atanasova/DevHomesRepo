@@ -18,6 +18,8 @@ class City(models.Model):
         unique=True
     )
 
+    def __str__(self):
+        return self.name
 
 class District(models.Model):
     name = models.CharField(
@@ -26,6 +28,8 @@ class District(models.Model):
         default=DistrictChoices.OTHER
     )
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='districts')
+
+
 
     class Meta:
         constraints = [
@@ -36,6 +40,9 @@ class District(models.Model):
         ]
         ordering = ["city__name", "name"]
 
+    def __str__(self):
+        return self.name
+
 class Property(models.Model):
     address = models.CharField("Address", max_length=255)
     size = models.PositiveIntegerField(default=0)
@@ -44,7 +51,7 @@ class Property(models.Model):
     bathrooms = models.PositiveIntegerField(default=0)
     balconies = models.PositiveIntegerField(default=0)
     price = models.DecimalField(decimal_places=2, max_digits=10)
-    district = models.ForeignKey(District, on_delete=models.PROTECT, null=True, blank=True, related_name="properties")
+    district = models.ForeignKey(District, on_delete=models.PROTECT, related_name="properties")
     property_type = models.CharField(max_length=255,
         choices = PropertyTypeChoices.choices,
         default= PropertyTypeChoices.Other

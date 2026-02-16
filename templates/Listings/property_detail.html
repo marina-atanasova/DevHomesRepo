@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Details{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ object.address }}</h1>
+  <p>ID: {{ object.pk }}</p>
+  <p>Price: {{ object.price }}</p>
+
+  <p><strong>District:</strong> {{ object.district }}</p>
+  <p><strong>Price:</strong> {{ object.price }}</p>
+  <p><strong>Size:</strong> {{ object.size }} m²</p>
+
+  <p><strong>Rooms:</strong> {{ object.rooms }}</p>
+  <p><strong>Bedrooms:</strong> {{ object.bedrooms }}</p>
+  <p><strong>Bathrooms:</strong> {{ object.bathrooms }}</p>
+  <p><strong>Balconies:</strong> {{ object.balconies }}</p>
+</div>
+{% endblock %}
