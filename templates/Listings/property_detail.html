@@ -2,7 +2,8 @@
 {% block title %}Details{% endblock %}
 {% block content %}
 <div class="card">
-  <h1>{{ object.address }}</h1>
+  <h1>{{ object.name }}</h1>
+    <p>{{ object.address }}</p>
   <p>ID: {{ object.pk }}</p>
   <p>Price: {{ object.price }}</p>
 

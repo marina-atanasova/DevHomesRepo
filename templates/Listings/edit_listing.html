@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Listing | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  <h1>Edit Listing</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="errors">
+            {{ field.errors }}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div style="margin-top: 20px;">
+      <button type="submit" class="btn">Save Changes</button>
+      <a href="{% url 'listings:all' %}" class="btn" style="background:#6b7280;">Back</a>
+    </div>
+
+  </form>
+
+</div>
+{% endblock %}

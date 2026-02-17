@@ -44,6 +44,7 @@ class District(models.Model):
         return self.name
 
 class Property(models.Model):
+    name = models.CharField(max_length=150)
     address = models.CharField("Address", max_length=255)
     size = models.PositiveIntegerField(default=0)
     bedrooms = models.PositiveIntegerField(default=0)
