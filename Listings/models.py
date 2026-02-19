@@ -43,6 +43,13 @@ class District(models.Model):
     def __str__(self):
         return self.name
 
+class Amenity(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Property(models.Model):
     name = models.CharField(max_length=150)
     address = models.CharField("Address", max_length=255)
@@ -73,3 +80,7 @@ class Property(models.Model):
         blank=True,
     )
     floor = models.CharField(max_length=255, default=0)
+
+    amenities = models.ManyToManyField(Amenity, blank=True, related_name="properties")
+
+

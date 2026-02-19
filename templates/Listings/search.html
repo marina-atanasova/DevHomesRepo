@@ -1,8 +1,50 @@
 {% extends "base.html" %}
+
 {% block title %}Search | DevHomes{% endblock %}
+
 {% block content %}
-  <div class="card">
-    <h1>Search</h1>
-    <p>Search Form Here</p>
+<div class="card">
+  <h1>Search Listings</h1>
+
+  <form method="get">
+  {% for field in form %}
+    <div class="form-group">
+      {% if field.name == "amenities" %}
+        <p><strong>{{ field.label }}</strong></p>
+        {{ field }}
+      {% else %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      {% endif %}
+
+      {% if field.errors %}
+        <div class="errors">{{ field.errors }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button class="btn" type="submit">Search</button>
+</form>
+
+</div>
+
+<br>
+
+{% if listings %}
+  <h2>Results ({{ listings|length }})</h2>
+  <div class="grid">
+    {% for p in listings %}
+      <div class="card">
+        <h2>{{ p.address }}</h2>
+        <p><strong>Price:</strong> {{ p.price }}</p>
+        <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
+        <p><strong>District:</strong> {{ p.district }}</p>
+
+      </div>
+    {% endfor %}
   </div>
+{% else %}
+  <div class="card">
+    <p>No results found. Try different filters.</p>
+  </div>
+{% endif %}
 {% endblock %}

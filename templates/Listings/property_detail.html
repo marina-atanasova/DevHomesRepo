@@ -15,5 +15,17 @@
   <p><strong>Bedrooms:</strong> {{ object.bedrooms }}</p>
   <p><strong>Bathrooms:</strong> {{ object.bathrooms }}</p>
   <p><strong>Balconies:</strong> {{ object.balconies }}</p>
+    {% if object.amenities.all %}
+          <p><strong>Amenities:</strong></p>
+          <ul>
+            {% for a in object.amenities.all %}
+              <li>{{ a.name }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p><strong>Amenities:</strong> None</p>
+    {% endif %}
+
+
 </div>
 {% endblock %}
