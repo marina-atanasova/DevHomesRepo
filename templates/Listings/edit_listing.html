@@ -17,6 +17,12 @@
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }}
+              {% if form.instance.pk and form.instance.district %}
+                 <div class="form-group">
+                    <label>City</label>
+                    <input type="text" value="{{ form.instance.district.city }}" disabled>
+                </div>
+        {% endif %}
         {% if field.errors %}
           <div class="errors">
             {{ field.errors }}

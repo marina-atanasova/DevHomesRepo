@@ -1,8 +1,22 @@
 from django import forms
-from .models import District, Amenity, Property
+
+from .choices import AptExposureChoices
+from .models import District, Amenity, Property, City
 
 
 class PropertyForm(forms.ModelForm):
+    price_per_sqm = forms.DecimalField(
+        label="Price per m²",
+        required=False,
+        disabled=True,
+    )
+    exposure = forms.MultipleChoiceField(
+        choices=AptExposureChoices.choices,
+        required=False,
+        widget=forms.CheckboxSelectMultiple(),
+        help_text="Select exposure(s): North, South, East, West.",
+    )
+
     class Meta:
         model = Property
         fields = "__all__"
@@ -10,6 +24,13 @@ class PropertyForm(forms.ModelForm):
             "amenities": forms.CheckboxSelectMultiple(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Populate the read-only field when editing an existing object
+        if self.instance and self.instance.pk:
+            value = self.instance.price_per_sqm
+            self.fields["price_per_sqm"].initial = value
 
 class ListingsSearchForm(forms.Form):
     district = forms.ModelChoiceField(
@@ -18,7 +39,12 @@ class ListingsSearchForm(forms.Form):
         empty_label="Any district",
         label="District",
     )
-
+    city = forms.ModelChoiceField(
+        queryset=City.objects.all().order_by("name"),
+        required=False,
+        empty_label="Any city",
+        label="City",
+    )
     min_price = forms.IntegerField(
         required=False,
         min_value=0,

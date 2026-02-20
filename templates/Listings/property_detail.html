@@ -1,31 +1,73 @@
 {% extends "base.html" %}
-{% block title %}Details{% endblock %}
+
+{% block title %}{{ object.address }} | DevHomes{% endblock %}
+
 {% block content %}
 <div class="card">
-  <h1>{{ object.name }}</h1>
-    <p>{{ object.address }}</p>
-  <p>ID: {{ object.pk }}</p>
-  <p>Price: {{ object.price }}</p>
+  <h1>{{ object.address }}</h1>
 
   <p><strong>District:</strong> {{ object.district }}</p>
-  <p><strong>Price:</strong> {{ object.price }}</p>
+    <p><strong>City:</strong> {{ object.district.city }}</p>
+
+  <p><strong>Price:</strong> {{ object.price }} EUR</p>
+
+  {% if object.price_per_sqm %}
+    <p><strong>Price / m²:</strong> {{ object.price_per_sqm|floatformat:2 }} EUR/m²</p>
+  {% endif %}
+
   <p><strong>Size:</strong> {{ object.size }} m²</p>
+    {% if object.description %}
+    <hr>
+    <p><strong>Description:</strong></p>
+    <p>{{ object.description }}</p>
+  {% endif %}
+  <p>
+    <strong>Rooms:</strong> {{ object.rooms }}
+    | <strong>Bedrooms:</strong> {{ object.bedrooms }}
+  </p>
 
-  <p><strong>Rooms:</strong> {{ object.rooms }}</p>
-  <p><strong>Bedrooms:</strong> {{ object.bedrooms }}</p>
-  <p><strong>Bathrooms:</strong> {{ object.bathrooms }}</p>
-  <p><strong>Balconies:</strong> {{ object.balconies }}</p>
-    {% if object.amenities.all %}
-          <p><strong>Amenities:</strong></p>
-          <ul>
-            {% for a in object.amenities.all %}
-              <li>{{ a.name }}</li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p><strong>Amenities:</strong> None</p>
-    {% endif %}
+  <p>
+    <strong>Bathrooms:</strong> {{ object.bathrooms }}
+    | <strong>Balconies:</strong> {{ object.balconies }}
+  </p>
+
+  {% if object.heating %}
+    <p><strong>Heating:</strong> {{ object.heating }}</p>
+  {% endif %}
+
+  {% if object.build_year %}
+    <p><strong>Build year:</strong> {{ object.build_year }}</p>
+  {% endif %}
+
+  {% if object.build_type %}
+    <p><strong>Build type:</strong> {{ object.build_type }}</p>
+  {% endif %}
+
+  {% if object.property_type %}
+    <p><strong>Type:</strong> {{ object.property_type }}</p>
+  {% endif %}
+
+  {% if object.exposure %}
+    <p><strong>Exposure:</strong> {{ object.exposure|join:", " }}</p>
+  {% endif %}
+
+  <hr>
+
+  <p><strong>Amenities:</strong></p>
+  {% if object.amenities.exists %}
+    <ul>
+      {% for a in object.amenities.all %}
+        <li>{{ a.name }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>None</p>
+  {% endif %}
 
 
+  <div style="margin-top: 18px;">
+    <a class="btn" href="{% url 'listings:all' %}">Back to all listings</a>
+    <a class="btn" href="{% url 'listings:edit' object.pk %}">Edit</a>
+  </div>
 </div>
 {% endblock %}

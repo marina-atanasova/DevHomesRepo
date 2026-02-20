@@ -9,12 +9,18 @@
         <div class="card">
           <h2>{{ p.name }}</h2>
             <p>{{ p.address }}</p>
-          <p><strong>Price:</strong> {{ p.price }}</p>
+        <p><strong>City:</strong> {{ p.district.city }}</p>
+        <p><strong>District:</strong> {{ p.district }}</p>
+          <p><strong>Price:</strong> {{ p.price }} </p>
+            {% if p.price_per_sqm %}
+                <p><strong>Price / m²:</strong> {{ p.price_per_sqm|floatformat:2 }} EUR/m²</p>
+            {% endif %}
             <p><strong>ID:</strong> {{ p.pk }}</p>
 
           <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
           <p><strong>Bathrooms:</strong> {{ p.bathrooms }} | <strong>Balconies:</strong> {{ p.balconies }}</p>
-          <p><strong>District:</strong> {{ p.district }}</p>
+
+
             <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>
             <a class="btn" href="{% url 'listings:edit' p.pk %}">Edit</a>
 

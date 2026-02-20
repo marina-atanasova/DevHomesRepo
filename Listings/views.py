@@ -31,6 +31,8 @@ def listings_search(request):
         max_price = form.cleaned_data.get("max_price")
         rooms = form.cleaned_data.get("rooms")
         amenities = form.cleaned_data.get("amenities")
+        city = form.cleaned_data.get("city")
+
 
         if district:
             qs = qs.filter(district=district)
@@ -42,6 +44,8 @@ def listings_search(request):
             qs = qs.filter(rooms__gte=rooms)
         if amenities:
             qs = qs.filter(amenities__in=amenities).distinct()
+        if city:
+            qs = qs.filter(district__city=city)
 
     return render(request, "Listings/search.html", {"form": form, "listings": qs})
 
