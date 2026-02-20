@@ -13,6 +13,7 @@ urlpatterns = [
 
     path("listings/", include("Listings.urls")),
     path("", include(("accounts.urls", "accounts"), namespace="accounts")),
+    path("", include("CreditCalculator.urls")),
 
 
 ]

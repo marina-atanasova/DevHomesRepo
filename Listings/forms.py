@@ -23,21 +23,21 @@ class ListingsSearchForm(forms.Form):
         required=False,
         min_value=0,
         label="Min price",
-        widget=forms.NumberInput(attrs={"placeholder": "e.g. 80000"}),
+        widget=forms.NumberInput(attrs={"placeholder": 80000}),
     )
 
     max_price = forms.IntegerField(
         required=False,
         min_value=0,
         label="Max price",
-        widget=forms.NumberInput(attrs={"placeholder": "e.g. 200000"}),
+        widget=forms.NumberInput(attrs={"placeholder": 200000}),
     )
 
     rooms = forms.IntegerField(
         required=False,
         min_value=0,
         label="Rooms",
-        widget=forms.NumberInput(attrs={"placeholder": "e.g. 3"}),
+        widget=forms.NumberInput(attrs={"placeholder": 3}),
     )
 
     amenities = forms.ModelMultipleChoiceField(

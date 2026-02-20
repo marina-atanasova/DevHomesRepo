@@ -24,8 +24,7 @@ class AllListings(ListView):
 def listings_search(request):
     form = ListingsSearchForm(request.GET or None)
     qs = Property.objects.all().order_by("-id")
-    print('IN FUNCTION')
-    # Only apply filters if the user actually submitted something
+
     if request.GET and form.is_valid():
         district = form.cleaned_data.get("district")
         min_price = form.cleaned_data.get("min_price")
@@ -35,22 +34,16 @@ def listings_search(request):
 
         if district:
             qs = qs.filter(district=district)
-
         if min_price is not None:
             qs = qs.filter(price__gte=min_price)
-
         if max_price is not None:
             qs = qs.filter(price__lte=max_price)
-
         if rooms is not None:
             qs = qs.filter(rooms__gte=rooms)
-
-        # ANY selected amenities (more forgiving)
         if amenities:
             qs = qs.filter(amenities__in=amenities).distinct()
 
     return render(request, "Listings/search.html", {"form": form, "listings": qs})
-
 
 
 class PropertyDetailView(DetailView):

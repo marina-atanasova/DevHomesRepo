@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'Listings',
     'django.contrib.postgres',
     'accounts',
+    'CreditCalculator',
 
 ]
 
