@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Inquiry | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Delete Inquiry</h1>
+  <p>
+    Are you sure you want to delete the inquiry from
+    <strong>{{ object.first_name }} {{ object.last_name }}</strong>?
+    This action cannot be undone.
+  </p>
+
+  <hr class="divider">
+
+  <p>
+    <strong>Status:</strong> {{ object.get_status_display }} ·
+    <strong>Type:</strong> {{ object.get_request_type_display }} ·
+    <strong>Created:</strong> {{ object.created_at|date:"Y-m-d H:i" }}
+  </p>
+
+  <p>
+    <strong>Message:</strong> {{ object.message|truncatechars:220 }}
+  </p>
+
+  <div class="row-end mt-14">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Yes, delete</button>
+    </form>
+
+    <a class="btn btn-muted" href="{% url 'accounts:contact-dashboard' %}">Cancel</a>
+  </div>
+</div>
+{% endblock %}

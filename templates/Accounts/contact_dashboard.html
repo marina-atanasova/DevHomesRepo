@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Dashboard | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="row">
+    <div>
+      <h1>Contact Dashboard</h1>
+      <p>Browse and manage incoming inquiries.</p>
+    </div>
+    <div class="row-end">
+      <a class="btn btn-muted" href="{% url 'accounts:contact' %}">New inquiry</a>
+    </div>
+  </div>
+</div>
+
+<div style="height:14px;"></div>
+
+{% if inquiries %}
+  {% for inquiry in inquiries %}
+    <div class="card" style="margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0 0 6px; font-size:20px;">
+            {{ inquiry.first_name }} {{ inquiry.last_name }}
+          </h2>
+
+          <p style="margin:0;">
+            <strong>Status:</strong> {{ inquiry.get_status_display }} ·
+            <strong>Type:</strong> {{ inquiry.get_request_type_display }} ·
+            <strong>Created:</strong> {{ inquiry.created_at|date:"Y-m-d H:i" }}
+          </p>
+
+          <p style="margin:8px 0 0;">
+            <strong>Contact:</strong> {{ inquiry.email }}{% if inquiry.phone %} · {{ inquiry.phone }}{% endif %}
+          </p>
+
+          {% if inquiry.listing %}
+            <p style="margin:8px 0 0;">
+              <strong>Linked listing:</strong> {{ inquiry.listing.address }}
+            </p>
+          {% endif %}
+
+          <p style="margin:10px 0 0;">
+            <strong>Message:</strong> {{ inquiry.message|truncatechars:180 }}
+          </p>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          {# Detail URL will work once you add a real DetailView + url #}
+          <a class="btn" style="background:#111827;" href="{% url 'accounts:contact-detail' inquiry.pk %}">
+            Details
+          </a>
+          <a class="btn" href="{% url 'accounts:contact-edit' inquiry.pk %}">
+            Edit
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="card">
+    <h2 style="font-size:20px; margin-bottom:6px;">No inquiries yet</h2>
+    <p>When users submit the contact form, they will show up here.</p>
+  </div>
+{% endif %}
+{% endblock %}

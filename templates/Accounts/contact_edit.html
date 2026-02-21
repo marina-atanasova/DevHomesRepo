@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Inquiry | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  <div class="row">
+    <div>
+      <h1>Edit Inquiry</h1>
+      <p>Update inquiry details and status.</p>
+      <p style="margin: 6px 0 0;">
+        <strong>Created at:</strong> {{ object.created_at|date:"Y-m-d H:i" }}
+      </p>
+    </div>
+
+    <div class="row-end">
+      <a href="{% url 'accounts:contact-dashboard' %}" class="btn btn-muted">Back</a>
+      <a href="{% url 'accounts:contact-detail' object.pk %}" class="btn btn-dark">Details</a>
+      <a href="{% url 'accounts:contact-delete' object.pk %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+      {# Hide created_at input entirely (we show it as text above) #}
+      {% if field.name == "created_at" %}
+        {# do nothing #}
+
+      {# Hide replied_at if empty #}
+      {% elif field.name == "replied_at" and not object.replied_at %}
+        {# do nothing #}
+
+      {# Hide closed_at if empty #}
+      {% elif field.name == "closed_at" and not object.closed_at %}
+        {# do nothing #}
+
+      {% else %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+
+          {% if field.help_text %}
+            <p>{{ field.help_text }}</p>
+          {% endif %}
+
+          {% if field.errors %}
+            <div class="errors">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="row-end mt-14">
+      <button type="submit" class="btn">Save Changes</button>
+      <a href="{% url 'accounts:contact-dashboard' %}" class="btn btn-muted">Cancel</a>
+    </div>
+  </form>
+
+</div>
+{% endblock %}
