@@ -1,0 +1,132 @@
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 10px 12px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover { background: var(--primary-2); text-decoration: none; }
+
+.btn-muted { background: #6b7280; }
+.btn-dark { background: #111827; }
+.btn-danger { background: #dc2626; }
+
+.btn-muted:hover { background: #4b5563; }
+.btn-dark:hover { background: #0b1220; }
+.btn-danger:hover { background: #b91c1c; }
+
+/* Forms */
+label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+textarea { resize: vertical; }
+
+.form-group { margin-bottom: 12px; }
+
+.errors {
+  margin-top: 6px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Forms: grid layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 14px;
+}
+.form-span-2 { grid-column: 1 / -1; }
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 14px;
+}
+
+/* CheckboxSelectMultiple alignment */
+.checkbox-grid ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.checkbox-grid li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.checkbox-grid input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* Utilities */
+.mt-14 { margin-top: 14px; }
+.mt-18 { margin-top: 18px; }
+.mb-6 { margin-bottom: 6px; }
+.mb-10 { margin-bottom: 10px; }
+
+/* Divider */
+.divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 18px 0;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.badge-new {
+  color: #065f46;
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+}
+
+.badge-progress {
+  color: #9a3412;
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.badge-closed {
+  color: #374151;
+  border-color: #e5e7eb;
+  background: #f3f4f6;
+}

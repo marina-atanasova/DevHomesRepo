@@ -19,6 +19,11 @@
     <strong>Created:</strong> {{ object.created_at|date:"Y-m-d H:i" }}
   </p>
 
+    {% if inquiry.replied_at %}
+      <p style="margin:6px 0 0;">
+        <strong>Replied at:</strong> {{ inquiry.replied_at|date:"Y-m-d H:i" }}
+      </p>
+    {% endif %}
   <p>
     <strong>Message:</strong> {{ object.message|truncatechars:220 }}
   </p>

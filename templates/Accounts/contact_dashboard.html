@@ -9,60 +9,99 @@
       <h1>Contact Dashboard</h1>
       <p>Browse and manage incoming inquiries.</p>
     </div>
+
     <div class="row-end">
       <a class="btn btn-muted" href="{% url 'accounts:contact' %}">New inquiry</a>
     </div>
   </div>
+
+  <hr class="divider">
+
+  <form method="get" class="row">
+    <div style="min-width: 240px;">
+      <label for="status" style="margin-top:0;">Filter by status</label>
+      <select name="status" id="status">
+        <option value="" {% if not selected_status %}selected{% endif %}>
+          Open only (hide closed)
+        </option>
+        <option value="ALL" {% if selected_status == "ALL" %}selected{% endif %}>
+          All statuses
+        </option>
+        {% for value,label in status_choices %}
+          <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="row-end" style="align-items:flex-end;">
+      <button type="submit" class="btn btn-dark">Apply</button>
+      <a class="btn btn-muted" href="{% url 'accounts:contact-dashboard' %}">Reset</a>
+    </div>
+  </form>
 </div>
 
-<div style="height:14px;"></div>
+<div class="card-stack mt-14">
+  {% if inquiries %}
+    {% for inquiry in inquiries %}
+      <div class="card">
+        <div class="row">
+          <div>
+            <h2 style="margin:0 0 6px; font-size:20px;">
+              {{ inquiry.first_name }} {{ inquiry.last_name }}
 
-{% if inquiries %}
-  {% for inquiry in inquiries %}
-    <div class="card" style="margin-bottom:14px;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;">
-        <div>
-          <h2 style="margin:0 0 6px; font-size:20px;">
-            {{ inquiry.first_name }} {{ inquiry.last_name }}
-          </h2>
+              {# Status badge next to title #}
+              {% if inquiry.status == "NEW" %}
+                <span class="badge badge-new">New</span>
+              {% elif inquiry.status == "IN_PROGRESS" %}
+                <span class="badge badge-progress">In Progress</span>
+              {% elif inquiry.status == "CLOSED" %}
+                <span class="badge badge-closed">Closed</span>
+              {% endif %}
+            </h2>
 
-          <p style="margin:0;">
-            <strong>Status:</strong> {{ inquiry.get_status_display }} ·
-            <strong>Type:</strong> {{ inquiry.get_request_type_display }} ·
-            <strong>Created:</strong> {{ inquiry.created_at|date:"Y-m-d H:i" }}
-          </p>
-
-          <p style="margin:8px 0 0;">
-            <strong>Contact:</strong> {{ inquiry.email }}{% if inquiry.phone %} · {{ inquiry.phone }}{% endif %}
-          </p>
-
-          {% if inquiry.listing %}
-            <p style="margin:8px 0 0;">
-              <strong>Linked listing:</strong> {{ inquiry.listing.address }}
+            <p style="margin:0;">
+              <strong>Type:</strong> {{ inquiry.get_request_type_display }} ·
+              <strong>Created:</strong> {{ inquiry.created_at|date:"Y-m-d H:i" }}
             </p>
-          {% endif %}
 
-          <p style="margin:10px 0 0;">
-            <strong>Message:</strong> {{ inquiry.message|truncatechars:180 }}
-          </p>
-        </div>
+          {% if inquiry.replied_at %}
+              <p><strong>Replied at:</strong><br>{{ inquiry.replied_at|date:"Y-m-d H:i" }}</p>
+            {% endif %}
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          {# Detail URL will work once you add a real DetailView + url #}
-          <a class="btn" style="background:#111827;" href="{% url 'accounts:contact-detail' inquiry.pk %}">
-            Details
-          </a>
-          <a class="btn" href="{% url 'accounts:contact-edit' inquiry.pk %}">
-            Edit
-          </a>
+            {% if inquiry.closed_at %}
+              <p><strong>Closed at:</strong><br>{{ inquiry.closed_at|date:"Y-m-d H:i" }}</p>
+            {% endif %}
+
+            <p style="margin:8px 0 0;">
+              <strong>Contact:</strong> {{ inquiry.email }}{% if inquiry.phone %} · {{ inquiry.phone }}{% endif %}
+            </p>
+
+            {% if inquiry.listing %}
+              <p style="margin:8px 0 0;">
+                <strong>Linked listing:</strong> {{ inquiry.listing.address }}
+              </p>
+            {% endif %}
+
+            <p style="margin:10px 0 0;">
+              <strong>Message:</strong> {{ inquiry.message|truncatechars:180 }}
+            </p>
+          </div>
+
+          <div class="row-end">
+            <a class="btn btn-dark" href="{% url 'accounts:contact-detail' inquiry.pk %}">Details</a>
+            <a class="btn" href="{% url 'accounts:contact-edit' inquiry.pk %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'accounts:contact-delete' inquiry.pk %}">Delete</a>
+          </div>
         </div>
       </div>
+    {% endfor %}
+  {% else %}
+    <div class="card">
+      <h2 style="font-size:20px; margin-bottom:6px;">No inquiries found</h2>
+      <p>Try changing the filter above.</p>
     </div>
-  {% endfor %}
-{% else %}
-  <div class="card">
-    <h2 style="font-size:20px; margin-bottom:6px;">No inquiries yet</h2>
-    <p>When users submit the contact form, they will show up here.</p>
-  </div>
-{% endif %}
+  {% endif %}
+</div>
 {% endblock %}

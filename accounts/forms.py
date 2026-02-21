@@ -18,21 +18,28 @@ class ContactForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "message": forms.Textarea(attrs={"rows": 5}),
-            # Optional: make reply_message bigger too
             "reply_message": forms.Textarea(attrs={"rows": 4}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if "created_at" in self.fields:
-            self.fields["created_at"].disabled = True  # real read-only
+            self.fields["created_at"].disabled = True
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
+        reply_text = (instance.reply_message or "").strip()
+        if instance.status == MessageStatusChoices.NEW:
+            instance.status = MessageStatusChoices.IN_PROGRESS
+
+        if reply_text:
+            instance.replied_at = timezone.now()
+        else:
+            instance.replied_at = None
+
         if instance.status == MessageStatusChoices.CLOSED:
-            if not instance.closed_at:
-                instance.closed_at = timezone.now()
+            instance.closed_at = timezone.now()
         else:
             instance.closed_at = None
 
