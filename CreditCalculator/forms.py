@@ -17,6 +17,13 @@ def calculator(property_price: float, interest_rate_yearly: float, self_funded_s
     return monthly_payment
 
 class CreditCalculator(forms.Form):
+    linked_property = forms.ModelChoiceField(
+        queryset=Property.objects.all(),
+        required=False,
+        empty_label="Select property (optional)",
+        label="Linked Property"
+    )
+
     property_price = forms.DecimalField(
         label="Property Price",
         widget=forms.NumberInput(attrs={'placeholder': 155000}),

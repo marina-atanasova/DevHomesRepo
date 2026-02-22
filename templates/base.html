@@ -49,8 +49,14 @@
         </div>
       </div>
 
-      <a class="nav-link" href="{% url 'CreditCalculator:credit' %}">Calculator</a>
-
+        <!-- Tools Dropdown -->
+        <div class="nav-item dropdown">
+          <span class="nav-link">Tools ▾</span>
+          <div class="dropdown-menu">
+            <a href="{% url 'CreditCalculator:credit' %}">Credit Calculator</a>
+            <a href="{% url 'CreditCalculator:credit_all' %}">Credit Requests</a>
+          </div>
+        </div>
     </nav>
 
   </div>

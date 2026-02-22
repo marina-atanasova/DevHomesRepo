@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Credit Request | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Delete Credit Request</h1>
+  <p>
+    Are you sure you want to delete the credit request for {{ object.property_price }}?
+    This action cannot be undone.
+  </p>
+
+  <hr class="divider">
+
+  <p>
+    <strong>Created:</strong> {{ object.created_at|date:"Y-m-d H:i" }}
+  </p>
+
+    {% if object.linked_property %}
+      <p style="margin:6px 0 0;">
+        <strong>Linked property:</strong> {{ object.linked_property }}
+      </p>
+    {% endif %}
+
+  <div class="row-end mt-14">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Yes, delete</button>
+    </form>
+
+    <a class="btn btn-muted" href="{% url 'CreditCalculator:credit_all' %}">Cancel</a>
+  </div>
+</div>
+{% endblock %}
