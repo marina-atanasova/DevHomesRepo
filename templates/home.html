@@ -1,8 +1,183 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Home | DevHomes{% endblock %}
+
 {% block content %}
-  <div class="card">
-    <h1>Welcome to DevHomes</h1>
-    <p>Buy, sell and rent properties</p>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">DevHomes: Your All-In-One Platform for real estate!</h1>
+   <form class="hero-search" method="get" action="{% url 'listings:search' %}">
+      <select name="scope" class="hero-select">
+        <option value="property">Search for property</option>
+        <option value="message">Search messages</option>
+      </select>
+
+      <input class="hero-input" type="text" name="q" placeholder="Enter search term">
+
+      <button class="btn btn-accent" type="submit">Search</button>
+    </form>
   </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section section-light">
+  <div class="section-head">
+    <h2>Why choose us?</h2>
+    <p>We have incredible offers and an amazing platform to find your next home!</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Available listings</div>
+      <div class="stat-value">{{ total_listings }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total Credit Requests</div>
+      <div class="stat-value">{{ total_credit_requests }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total Message Inquiries</div>
+      <div class="stat-value">{{ total_inquiries }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP PROPERTIES -->
+<section class="section section-dark">
+  <div class="section-head section-head-invert">
+    <h2>Check our top properties:</h2>
+  </div>
+
+  <div class="top-grid">
+    <!-- Most recent -->
+    <div class="top-card">
+      <div class="top-badge">Most recent offer</div>
+      {% if most_recent_property %}
+        <div class="top-body">
+          <div class="top-title">{{ most_recent_property.name }}</div>
+          <div class="top-sub">
+            {{ most_recent_property.district.city }} · {{ most_recent_property.district.name }}
+          </div>
+          <div class="top-sub">
+            {{ most_recent_property.price }} · {{ most_recent_property.size }} m²
+            {% if most_recent_property.price_per_sqm %}
+              · {{ most_recent_property.price_per_sqm }} / m²
+            {% endif %}
+          </div>
+        </div>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_recent_property.pk %}">View</a>
+      {% else %}
+        <div class="top-body"><p>No listings yet.</p></div>
+      {% endif %}
+    </div>
+
+    <!-- Most credit requests -->
+    <div class="top-card">
+      <div class="top-badge">Most credit requests</div>
+      {% if most_credit_property %}
+        <div class="top-body">
+          <div class="top-title">{{ most_credit_property.name }}</div>
+          <div class="top-sub">
+            {{ most_credit_property.district.city }} · {{ most_credit_property.district.name }}
+          </div>
+          <div class="top-sub">
+            Requests: {{ most_credit_property.credit_requests_count }}
+          </div>
+        </div>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_credit_property.pk %}">View</a>
+      {% else %}
+        <div class="top-body"><p>No credit requests yet.</p></div>
+      {% endif %}
+    </div>
+
+    <!-- Most message inquiries -->
+    <div class="top-card">
+      <div class="top-badge">Most message inquiries</div>
+      {% if most_inquiry_property %}
+        <div class="top-body">
+          <div class="top-title">{{ most_inquiry_property.name }}</div>
+          <div class="top-sub">
+            {{ most_inquiry_property.district.city }} · {{ most_inquiry_property.district.name }}
+          </div>
+          <div class="top-sub">
+            Inquiries: {{ most_inquiry_property.inquiries_count }}
+          </div>
+        </div>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_inquiry_property.pk %}">View</a>
+      {% else %}
+        <div class="top-body"><p>No inquiries yet.</p></div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="center-actions">
+    <a class="btn btn-darkwide" href="{% url 'listings:all' %}">View all offers</a>
+  </div>
+</section>
+
+<!-- MESSAGE BOARD PREVIEW -->
+<section class="section section-mid">
+  <div class="section-head section-head-invert">
+    <h2>Catch up on our message board:</h2>
+  </div>
+
+  <div class="message-grid">
+    {% for inquiry in recent_inquiries %}
+      <div class="message-card">
+        <div class="message-title">{{ inquiry.first_name }} {{ inquiry.last_name }}</div>
+        <div class="message-sub">{{ inquiry.get_status_display }} · {{ inquiry.created_at|date:"Y-m-d" }}</div>
+        <div class="message-text">{{ inquiry.message|truncatechars:110 }}</div>
+
+        <a class="btn btn-light" href="{% url 'accounts:contact-detail' inquiry.pk %}">View</a>
+      </div>
+    {% empty %}
+      <div class="card">
+        <p>No inquiries yet.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="center-actions">
+    <a class="btn btn-accentwide" href="{% url 'accounts:contact-dashboard' %}">View all messages</a>
+  </div>
+</section>
+
+<!-- CREDIT CALCULATOR STATS -->
+<section class="section section-light">
+  <div class="section-head">
+    <h2>Check our Credit Calculator</h2>
+    <p>It has helped many others get an estimate on their purchasing power:</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Avg credit requested</div>
+      <div class="stat-value">
+        {% if avg_credit_requested %}{{ avg_credit_requested }}{% else %}—{% endif %}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total requests received</div>
+      <div class="stat-value">{{ total_credit_requests }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Avg credit duration</div>
+      <div class="stat-value">
+        {% if avg_credit_years %}{{ avg_credit_years }} yrs{% else %}—{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="center-actions">
+    <a class="btn btn-darkwide" href="{% url 'CreditCalculator:credit' %}">Get your estimate now</a>
+  </div>
+</section>
+
 {% endblock %}
