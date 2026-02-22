@@ -25,6 +25,7 @@ class ContactInquiryListView(ListView):
     template_name = "accounts/contact_dashboard.html"
     context_object_name = "inquiries"
     ordering = ['-created_at']
+    paginate_by = 6
 
     def get_queryset(self):
         qs = super().get_queryset()

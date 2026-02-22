@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django.views.generic import DetailView, CreateView, ListView, UpdateView
+from django.views.generic import DetailView, CreateView, ListView, UpdateView, DeleteView
 from .forms import PropertyForm
 from django.shortcuts import render
 from .models import Property
@@ -67,3 +67,7 @@ class EditListingView(UpdateView):
     template_name = "Listings/edit_listing.html"
     success_url = "/listings"
 
+class DeleteListingView(DeleteView):
+    model = Property
+    success_url = "/listings"
+    template_name = "Listings/delete_listing.html"

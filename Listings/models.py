@@ -4,7 +4,7 @@ from random import choices
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
-from Listings.choices import CityChoices, DistrictChoices, PropertyTypeChoices, BuildTypeChoices, HeatingTypeChoices, \
+from Listings.choices import CityChoices, PropertyTypeChoices, BuildTypeChoices, HeatingTypeChoices, \
     AptExposureChoices
 
 
@@ -23,11 +23,7 @@ class City(models.Model):
         return self.get_name_display()
 
 class District(models.Model):
-    name = models.CharField(
-        max_length=50,
-        choices=DistrictChoices.choices,
-        default=DistrictChoices.OTHER
-    )
+    name = models.CharField(max_length=80)
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='districts')
 
     class Meta:
@@ -40,7 +36,7 @@ class District(models.Model):
         ordering = ["city__name", "name"]
 
     def __str__(self):
-        return f"{self.city.get_name_display()} — {self.get_name_display()}"
+        return f"{self.city.get_name_display()} — {self.name}"
 
 class Amenity(models.Model):
     name = models.CharField(max_length=50, unique=True)

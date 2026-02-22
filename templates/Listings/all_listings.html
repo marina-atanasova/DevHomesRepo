@@ -23,6 +23,8 @@
 
             <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>
             <a class="btn" href="{% url 'listings:edit' p.pk %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'listings:delete' p.pk %}">Delete</a>
+
 
         </div>
       {% endfor %}

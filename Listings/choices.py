@@ -10,16 +10,16 @@ class CityChoices(models.TextChoices):
     SHUMEN = "Shumen", "Shumen"
     VIDIN = "Vidin", "Vidin"
 
-class DistrictChoices(models.TextChoices):
-    MLADOST = "Mladost", "Mladost"
-    DRUJBA = "Drujba", "Drujba"
-    CENTER = "Center", "Center"
-    VITOSHA = "Vitosha", "Vitosha"
-    HIPODRUMA = "Hipodruma", "Hipodruma"
-    NADEJA = "Nadeja", "Nadeja"
-    LIULIN = "Liulin", "Liulin"
-    BOROVO = "Borovo", "Borovo"
-    OTHER = "Other", "Other"
+# class DistrictChoices(models.TextChoices):
+#     MLADOST = "Mladost", "Mladost"
+#     DRUJBA = "Drujba", "Drujba"
+#     CENTER = "Center", "Center"
+#     VITOSHA = "Vitosha", "Vitosha"
+#     HIPODRUMA = "Hipodruma", "Hipodruma"
+#     NADEJA = "Nadeja", "Nadeja"
+#     LIULIN = "Liulin", "Liulin"
+#     BOROVO = "Borovo", "Borovo"
+#     OTHER = "Other", "Other"
 
 class PropertyTypeChoices(models.TextChoices):
     Apartment = "Apartment", "Apartment"

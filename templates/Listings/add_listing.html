@@ -1,27 +1,154 @@
 {% extends "base.html" %}
-
 {% block title %}Add New Listing | DevHomes{% endblock %}
 
 {% block content %}
 <div class="card">
-  <h1>Add New Listing</h1>
+
+  <div class="row">
+    <div>
+      <h1>Add New Listing</h1>
+    </div>
+
+    <div class="row-end">
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Back</a>
+    </div>
+  </div>
+
+  <hr class="divider">
 
   <form method="post">
     {% csrf_token %}
-
     {{ form.non_field_errors }}
 
-    {% for field in form %}
-      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-      {{ field }}
-      {% if field.errors %}
-        <div class="errors">
-          {{ field.errors }}
-        </div>
-      {% endif %}
-    {% endfor %}
+    <!-- === MAIN TWO COLUMN GRID === -->
+    <div class="form-grid">
 
-    <button type="submit" class="btn">Create Listing</button>
+      <!-- Name -->
+      <div>
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+
+      <!-- Address -->
+      <div>
+        <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+        {{ form.address }}
+        {{ form.address.errors }}
+      </div>
+
+      <!-- District -->
+      <div>
+        <label for="{{ form.district.id_for_label }}">City - District</label>
+        {{ form.district }}
+        {{ form.district.errors }}
+      </div>
+
+      <!-- Property Type -->
+      <div>
+        <label for="{{ form.property_type.id_for_label }}">{{ form.property_type.label }}</label>
+        {{ form.property_type }}
+        {{ form.property_type.errors }}
+      </div>
+
+      <!-- Size -->
+      <div>
+        <label for="{{ form.size.id_for_label }}">{{ form.size.label }}</label>
+        {{ form.size }}
+        {{ form.size.errors }}
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+        {{ form.price }}
+        {{ form.price.errors }}
+      </div>
+
+      <!-- Price per sqm (auto-calculated / disabled) -->
+      {% if form.price_per_sqm %}
+      <div>
+        <label for="{{ form.price_per_sqm.id_for_label }}">{{ form.price_per_sqm.label }}</label>
+        {{ form.price_per_sqm }}
+      </div>
+      {% endif %}
+
+      <!-- Bedrooms -->
+      <div>
+        <label for="{{ form.bedrooms.id_for_label }}">{{ form.bedrooms.label }}</label>
+        {{ form.bedrooms }}
+      </div>
+
+      <!-- Rooms -->
+      <div>
+        <label for="{{ form.rooms.id_for_label }}">{{ form.rooms.label }}</label>
+        {{ form.rooms }}
+      </div>
+
+      <!-- Bathrooms -->
+      <div>
+        <label for="{{ form.bathrooms.id_for_label }}">{{ form.bathrooms.label }}</label>
+        {{ form.bathrooms }}
+      </div>
+
+      <!-- Balconies -->
+      <div>
+        <label for="{{ form.balconies.id_for_label }}">{{ form.balconies.label }}</label>
+        {{ form.balconies }}
+      </div>
+
+      <!-- Build Year -->
+      <div>
+        <label for="{{ form.build_year.id_for_label }}">{{ form.build_year.label }}</label>
+        {{ form.build_year }}
+      </div>
+
+      <!-- Build Type -->
+      <div>
+        <label for="{{ form.build_type.id_for_label }}">{{ form.build_type.label }}</label>
+        {{ form.build_type }}
+      </div>
+
+      <!-- Heating -->
+      <div>
+        <label for="{{ form.heating.id_for_label }}">{{ form.heating.label }}</label>
+        {{ form.heating }}
+      </div>
+
+    </div>
+
+    <!-- === FEATURES SECTION (SIDE BY SIDE) === -->
+    <div class="form-grid mt-18">
+
+      <!-- Exposure -->
+      <div class="checkbox-grid checkbox-grid-compact">
+        <label>{{ form.exposure.label }}</label>
+        {{ form.exposure }}
+        {{ form.exposure.errors }}
+      </div>
+
+      <!-- Amenities -->
+      <div class="checkbox-grid checkbox-grid-compact">
+        <label>{{ form.amenities.label }}</label>
+        {{ form.amenities }}
+        {{ form.amenities.errors }}
+      </div>
+
+      <!-- Description LAST -->
+      <div class="form-span-2">
+        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        {{ form.description }}
+        {{ form.description.errors }}
+      </div>
+
+    </div>
+
+    <div class="form-actions mt-18">
+      <button type="submit" class="btn">Create Listing</button>
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Cancel</a>
+    </div>
+
   </form>
+
 </div>
 {% endblock %}
