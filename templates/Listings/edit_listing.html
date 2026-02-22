@@ -5,35 +5,50 @@
 {% block content %}
 <div class="card">
 
-  <h1>Edit Listing</h1>
+  <div class="row">
+    <div>
+      <h1>Edit Listing</h1>
+
+      {% if form.instance.pk and form.instance.district %}
+        <p class="meta-line">
+          <strong>City:</strong>
+          <span class="readonly-pill">{{ form.instance.district.city }}</span>
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="row-end">
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Back</a>
+    </div>
+  </div>
+
+  <hr class="divider">
 
   <form method="post">
     {% csrf_token %}
-
     {{ form.non_field_errors }}
 
-    {% for field in form %}
+    <div class="form-grid">
+      {% for field in form %}
+        {# Make these span full width. Adjust names to match your form fields. #}
+        <div class="
+          {% if field.name == 'description' %}form-span-2{% endif %}
+          {% if field.name == 'amenities' %}form-span-2 checkbox-grid{% endif %}
+          {% if field.name == 'exposure' %}form-span-2 checkbox-grid{% endif %}
+        ">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
 
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-              {% if form.instance.pk and form.instance.district %}
-                 <div class="form-group">
-                    <label>City</label>
-                    <input type="text" value="{{ form.instance.district.city }}" disabled>
-                </div>
-        {% endif %}
-        {% if field.errors %}
-          <div class="errors">
-            {{ field.errors }}
-          </div>
-        {% endif %}
-      </div>
-    {% endfor %}
+          {% if field.errors %}
+            <div class="errors">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
 
-    <div style="margin-top: 20px;">
+    <div class="form-actions">
       <button type="submit" class="btn">Save Changes</button>
-      <a href="{% url 'listings:all' %}" class="btn" style="background:#6b7280;">Back</a>
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Cancel</a>
     </div>
 
   </form>

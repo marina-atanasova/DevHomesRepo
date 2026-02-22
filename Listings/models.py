@@ -20,7 +20,7 @@ class City(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
 class District(models.Model):
     name = models.CharField(
@@ -29,8 +29,6 @@ class District(models.Model):
         default=DistrictChoices.OTHER
     )
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='districts')
-
-
 
     class Meta:
         constraints = [
@@ -42,7 +40,7 @@ class District(models.Model):
         ordering = ["city__name", "name"]
 
     def __str__(self):
-        return self.name
+        return f"{self.city.get_name_display()} — {self.get_name_display()}"
 
 class Amenity(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -95,3 +93,5 @@ class Property(models.Model):
         except (ZeroDivisionError, TypeError):
             return None
 
+    def __str__(self):
+        return self.name

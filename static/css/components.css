@@ -63,7 +63,41 @@ textarea { resize: vertical; }
   align-items: center;
   margin-top: 14px;
 }
+/* Readonly / Disabled field styling */
+input[readonly],
+textarea[readonly],
+select[readonly] {
+  background: #f3f4f6;
+  color: #6b7280;
+  border-color: var(--border);
+}
 
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background: #eef2f7;
+  color: #9ca3af;
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+
+/* Optional: readonly display chip for non-input values (like City) */
+.readonly-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Optional: meta line under titles */
+.meta-line {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
 /* CheckboxSelectMultiple alignment */
 .checkbox-grid ul {
   list-style: none;
