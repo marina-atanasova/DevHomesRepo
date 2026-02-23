@@ -10,7 +10,7 @@
       <p>Browse and manage incoming inquiries.</p>
     </div>
 
-    <div class="row-end">
+    <div class="row-end" >
       <a class="btn btn-muted" href="{% url 'accounts:contact' %}">New inquiry</a>
     </div>
   </div>
@@ -104,19 +104,25 @@
     </div>
   {% endif %}
 
-<span class="step-links">
+{% if is_paginated %}
+  <nav class="pager" aria-label="Pagination">
     {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      <a class="pager-btn" href="?status={{ request.GET.status }}&page={{ page_obj.previous_page_number }}">← Prev</a>
+    {% else %}
+      <span class="pager-btn is-disabled">← Prev</span>
     {% endif %}
-    <span class="current">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+    <span class="pager-info">
+      Page <strong>{{ page_obj.number }}</strong> / <strong>{{ page_obj.paginator.num_pages }}</strong>
     </span>
+
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      <a class="pager-btn" href="?status={{ request.GET.status }}&page={{ page_obj.next_page_number }}">Next →</a>
+    {% else %}
+      <span class="pager-btn is-disabled">Next →</span>
     {% endif %}
- </span>
+  </nav>
+{% endif %}
 
 </div>
 {% endblock %}

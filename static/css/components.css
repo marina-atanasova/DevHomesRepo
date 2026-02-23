@@ -13,7 +13,7 @@
 .btn:hover { background: var(--primary-2); text-decoration: none; }
 
 .btn-muted { background: #6b7280; }
-.btn-dark { background: #111827; }
+.btn-dark { background: #6a8dd1; }
 .btn-danger { background: #dc2626; }
 
 .btn-muted:hover { background: #4b5563; }
@@ -190,4 +190,36 @@ select:disabled {
   align-items: center;
   gap: 6px;
   font-weight: 500;
+}
+
+.pager{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-top:16px;
+}
+
+.pager-btn{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#fff;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.pager-btn:hover{ background:#f3f4f6; text-decoration:none; }
+
+.pager-btn.is-disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  user-select:none;
+}
+
+.pager-info{
+  color:var(--muted);
+  font-weight:600;
 }
