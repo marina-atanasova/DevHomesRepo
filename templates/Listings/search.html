@@ -1,34 +1,135 @@
+{#{% extends "base.html" %}#}
+{##}
+{#{% block title %}Search | DevHomes{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#<div class="card">#}
+{#  <h1>Search Listings</h1>#}
+{##}
+{#  <form method="get">#}
+{#  {% for field in form %}#}
+{#    <div class="form-group">#}
+{##}
+{#      {% if field.name == "amenities" %}#}
+{#        <p><strong>{{ field.label }}</strong></p>#}
+{#        {{ field }}#}
+{#      {% else %}#}
+{#        <label for="{{ field.id_for_label }}">{{ field.label }}</label>#}
+{#        {{ field }}#}
+{#      {% endif %}#}
+{##}
+{#      {% if field.errors %}#}
+{#        <div class="errors">{{ field.errors }}</div>#}
+{#      {% endif %}#}
+{#    </div>#}
+{#  {% endfor %}#}
+{#  <button class="btn" type="submit">Search</button>#}
+{#</form>#}
+{##}
+{#</div>#}
+{##}
+{#<br>#}
+{##}
+{#{% if listings %}#}
+{#  <h2>Matching listings: {{ listings|length }}</h2>#}
+{#  <div class="grid">#}
+{#    {% for p in listings %}#}
+{#      <div class="card">#}
+{#        <h2>{{ p.address }}</h2>#}
+{#          <p><strong>District:</strong>{{ p.district }}</p>#}
+{#          <p><strong>City:</strong> {{ p.district.city }}</p>#}
+{#        <p><strong>Price:</strong> {{ p.price }}</p>#}
+{#        <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>#}
+{#        <p><strong>District:</strong> {{ p.district }}</p>#}
+{##}
+{#        <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>#}
+{#      </div>#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#{% else %}#}
+{#  <div class="card">#}
+{#    <p>No results found. Try different filters.</p>#}
+{#  </div>#}
+{#{% endif %}#}
+{#{% endblock %}#}
+{#-------------------------------------#}
+
 {% extends "base.html" %}
 
-{% block title %}Search | DevHomes{% endblock %}
+{% block title %}Search Listings | DevHomes{% endblock %}
 
 {% block content %}
 <div class="card">
-  <h1>Search Listings</h1>
+
+  <div class="row">
+    <div>
+      <h1>Search Listings</h1>
+    </div>
+  </div>
+
+  <hr class="divider">
 
   <form method="get">
-  {% for field in form %}
-    <div class="form-group">
 
-      {% if field.name == "amenities" %}
-        <p><strong>{{ field.label }}</strong></p>
-        {{ field }}
-      {% else %}
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-      {% endif %}
+    <div class="form-grid">
 
-      {% if field.errors %}
-        <div class="errors">{{ field.errors }}</div>
-      {% endif %}
+      <!-- Keyword -->
+      <div class="form-span-2">
+        <label for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
+        {{ form.q }}
+      </div>
+
+      <!-- City -->
+      <div>
+        <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+        {{ form.city }}
+      </div>
+
+      <!-- District -->
+      <div>
+        <label for="{{ form.district.id_for_label }}">{{ form.district.label }}</label>
+        {{ form.district }}
+      </div>
+
+      <!-- Min price -->
+      <div>
+        <label for="{{ form.min_price.id_for_label }}">{{ form.min_price.label }}</label>
+        {{ form.min_price }}
+      </div>
+
+      <!-- Max price -->
+      <div>
+        <label for="{{ form.max_price.id_for_label }}">{{ form.max_price.label }}</label>
+        {{ form.max_price }}
+      </div>
+
+      <!-- Rooms -->
+      <div>
+        <label for="{{ form.rooms.id_for_label }}">{{ form.rooms.label }}</label>
+        {{ form.rooms }}
+      </div>
+
     </div>
-  {% endfor %}
-  <button class="btn" type="submit">Search</button>
-</form>
 
+
+
+      <!-- Amenities -->
+      <div class= "checkbox-grid checkbox-grid-2col checkbox-grid-compact">
+        <label>{{ form.amenities.label }}</label>
+        {{ form.amenities }}
+        {{ form.amenities.errors }}
+      </div>
+
+    <div class="form-actions mt-18">
+      <button type="submit" class="btn">Search</button>
+      <a href="{% url 'listings:search' %}" class="btn btn-muted">Reset</a>
+    </div>
+
+  </form>
 </div>
 
-<br>
+<hr class="divider mt-18">
+    
 
 {% if listings %}
   <h2>Matching listings: {{ listings|length }}</h2>

@@ -1,10 +1,13 @@
 from django import forms
+from django.utils import timezone
 
 from .choices import AptExposureChoices
 from .models import District, Amenity, Property, City
 
 
 class PropertyForm(forms.ModelForm):
+
+
     price_per_sqm = forms.DecimalField(
         label="Price per m²",
         required=False,
@@ -32,7 +35,42 @@ class PropertyForm(forms.ModelForm):
             value = self.instance.price_per_sqm
             self.fields["price_per_sqm"].initial = value
 
+    def clean_build_year(self):
+        year = self.cleaned_data.get("build_year")
+        if year is None:
+            return year
+        current = timezone.now().year
+        if year < 1800 or year > current + 1:
+            raise forms.ValidationError(f"Build year must be between 1800 and {current + 10}.")
+        return year
+
+    def clean(self):
+        cleaned = super().clean()
+
+
+        address = cleaned.get("address")
+        price = cleaned.get("price")
+        exposure = cleaned.get("exposure")
+
+        if not address:
+            self.add_error(None, "Address cannot be blank.")
+
+        if price is None:
+            self.add_error(None, "Price cannot be blank.")
+
+        if not exposure:
+            self.add_error(None, "Please select at least one exposure.")
+        return cleaned
+
+
 class ListingsSearchForm(forms.Form):
+    q = forms.CharField(
+        required=False,
+        label="Search",
+        widget=forms.TextInput(attrs={"placeholder": "Search by name, address, city, district..."})
+    )
+
+
     district = forms.ModelChoiceField(
         queryset=District.objects.none(),
         required=False,

@@ -4,6 +4,22 @@
 {% block content %}
 <div class="card">
 
+{% if form.build_year.errors %}
+  <div class="field-errors">
+    {% for error in form.build_year.errors %}
+      <div class="error-message">{{ error }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if form.non_field_errors %}
+  <div class="field-errors">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
   <div class="row">
     <div>
       <h1>Edit Listing</h1>
@@ -25,7 +41,7 @@
 
   <form method="post">
     {% csrf_token %}
-    {{ form.non_field_errors }}
+
 
     <!-- === MAIN TWO COLUMN GRID === -->
     <div class="form-grid">

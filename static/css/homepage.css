@@ -113,7 +113,7 @@
 .message-text { color: rgba(255,255,255,0.85); margin-top: 10px; }
 
 /* Buttons variants for homepage */
-.btn-light { background: #e5e7eb; color: #111827; }
+.btn-light { background: #e5e7eb; color: #111827; margin-top: 5px}
 .btn-light:hover { background: #d1d5db; }
 
 .btn-accent { background: #d4a11f; color: #111827; }
@@ -126,12 +126,19 @@
 .btn-accentwide { background: #d4a11f; color: #111827; padding: 12px 18px; }
 .btn-accentwide:hover { background: #b98710; }
 
-.btn-sm {
-    background: var(--primary);
-    margin-top: 20px;
-    margin-bottom: 0px;
-  padding: 10px 15px;
-  font-size: 15px;
+.hero-pill{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: rgba(229, 231, 235, 0.95);
+  border: 1px solid rgba(255,255,255,0.28);
+  font-weight: 800;
+  color: #0b1f3a;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 12px;
 }
 
 

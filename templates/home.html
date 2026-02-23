@@ -10,9 +10,9 @@
   <div class="hero-inner">
     <h1 class="hero-title">DevHomes: Your All-In-One Platform for real estate!</h1>
    <form class="hero-search" method="get" action="{% url 'listings:search' %}">
-      <select name="scope" class="hero-select">
-        <option value="property">Search for property</option>
-      </select>
+      <div class="hero-pill" aria-label="Search scope">
+        Search for property
+      </div>
 
       <input class="hero-input" type="text" name="q" placeholder="Enter search term">
 
@@ -69,7 +69,7 @@
             {% endif %}
           </div>
         </div>
-        <a class="btn btn-light btn-sm" href="{% url 'listings:detail' most_recent_property.pk %}">View</a>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_recent_property.pk %}">View</a>
       {% else %}
         <div class="top-body"><p>No listings yet.</p></div>
       {% endif %}

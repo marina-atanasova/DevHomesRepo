@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
@@ -25,7 +26,10 @@ def listings_search(request):
     form = ListingsSearchForm(request.GET or None)
     qs = Property.objects.all().order_by("-id")
 
+
+
     if request.GET and form.is_valid():
+        q = form.cleaned_data.get("q")
         district = form.cleaned_data.get("district")
         min_price = form.cleaned_data.get("min_price")
         max_price = form.cleaned_data.get("max_price")
@@ -33,7 +37,13 @@ def listings_search(request):
         amenities = form.cleaned_data.get("amenities")
         city = form.cleaned_data.get("city")
 
-
+        if q:
+            qs = qs.filter(
+                Q(name__icontains=q)
+                | Q(address__icontains=q)
+                | Q(district__name__icontains=q)
+                | Q(district__city__name__icontains=q)
+            )
         if district:
             qs = qs.filter(district=district)
         if min_price is not None:

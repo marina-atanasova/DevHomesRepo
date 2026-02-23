@@ -12,6 +12,7 @@
   gap: 14px;
   align-items: center;
   justify-content: space-between;
+
 }
 
 /* Brand (logo + name) */
@@ -68,7 +69,7 @@
 }
 
 .nav-link:hover {
-  background: #f3f4f6;
+  background: #a4c4ff;
   color: var(--text);
   text-decoration: none;
 }
@@ -78,7 +79,7 @@
   color: var(--text);
 }
 .nav-link-primary:hover {
-  background: rgba(13, 40, 91, 0.14);
+  background: #b98710;
 }
 
 /* Cards + Layout */
@@ -192,7 +193,7 @@
 }
 
 .dropdown-menu a:hover {
-  background: #f3f4f6;
+  background: #6a8dd1;
 }
 
 /* Show on hover */
