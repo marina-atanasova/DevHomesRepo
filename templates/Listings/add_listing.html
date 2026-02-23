@@ -73,6 +73,13 @@
       </div>
       {% endif %}
 
+
+    <div>
+      <label for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
+      {{ form.floor }}
+      {{ form.floor.errors }}
+    </div>
+
       <!-- Bedrooms -->
       <div>
         <label for="{{ form.bedrooms.id_for_label }}">{{ form.bedrooms.label }}</label>

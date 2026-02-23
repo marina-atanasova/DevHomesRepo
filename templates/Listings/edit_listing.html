@@ -51,6 +51,12 @@
         {{ form.district.errors }}
       </div>
 
+        <div>
+          <label for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
+          {{ form.floor }}
+          {{ form.floor.errors }}
+        </div>
+
       <!-- Property Type -->
       <div>
         <label for="{{ form.property_type.id_for_label }}">{{ form.property_type.label }}</label>
@@ -72,11 +78,7 @@
         {{ form.price.errors }}
       </div>
 
-      <!-- Price per sqm (next to price) -->
-      <div>
-        <label for="{{ form.price_per_sqm.id_for_label }}">{{ form.price_per_sqm.label }}</label>
-        {{ form.price_per_sqm }}
-      </div>
+
 
       <!-- Bedrooms -->
       <div>
@@ -163,3 +165,60 @@
 
 </div>
 {% endblock %}
+
+
+{##}
+{#{% extends "base.html" %}#}
+{##}
+{#{% block title %}#}
+{#    Edit Listing | DevHomes#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="card">#}
+{#        <h1>Edit Listing</h1>#}
+{##}
+{#        <form method="post">#}
+{#            {% csrf_token %}#}
+{##}
+{#            {{ form.non_field_errors }}#}
+{##}
+{#            {% for field in form %}#}
+{#                <div class="form-group">#}
+{#                    <label for="{{ field.id_for_label }}">#}
+{#                        {{ field.label }}#}
+{#                    </label>#}
+{##}
+{#                    {{ field }}#}
+{##}
+{#                    {% if form.instance.pk and form.instance.district %}#}
+{#                        <div class="form-group">#}
+{#                            <label>City</label>#}
+{#                            <input type="text"#}
+{#                                   value="{{ form.instance.district.city }}"#}
+{#                                   disabled>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{##}
+{#                    {% if field.errors %}#}
+{#                        <div class="errors">#}
+{#                            {{ field.errors }}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{#            <div style="margin-top: 20px;">#}
+{#                <button type="submit" class="btn">#}
+{#                    Save Changes#}
+{#                </button>#}
+{##}
+{#                <a href="{% url 'listings:all' %}"#}
+{#                   class="btn"#}
+{#                   style="background:#6b7280;">#}
+{#                    Back#}
+{#                </a>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#{% endblock %}#}

@@ -70,5 +70,25 @@
   {% block content %}{% endblock %}
 </main>
 
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>DevHomes</strong><br>
+      Your All-In-One Real Estate Platform
+    </div>
+
+    <div class="footer-links">
+      <a href="{% url 'listings:all' %}">Listings</a>
+      <a href="{% url 'accounts:contact-dashboard' %}">Inquiries</a>
+      <a href="{% url 'CreditCalculator:credit' %}">Calculator</a>
+    </div>
+
+    <div class="footer-meta">
+      © {{ now|date:"Y" }} DevHomes. All rights reserved.
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
