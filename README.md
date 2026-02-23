@@ -3,12 +3,12 @@ DevHomes is a real estate listing Django project. It holds multiple apartments a
 
 
 --- Tech Stack:---
-  Python 3.13+
-  Django (latest stable)
-  PostgreSQL
-  HTML / CSS
-  Django ORM
-  psycopg2-binary
+  *Python 3.13+
+  *Django (latest stable)
+  *PostgreSQL
+  *HTML / CSS
+  *Django ORM
+  *psycopg2-binary
 
 --- Key features:---
 
@@ -39,36 +39,36 @@ The homepage of the site offers statistics and key listings to the users. It als
 
 --- Repo setup and Venv ---
 1. Clone the repository
-    git clone <(https://github.com/marina-atanasova/DevHomesRepo)>
-    cd DevHomesDjango
+    *git clone <(https://github.com/marina-atanasova/DevHomesRepo)>
+    *cd DevHomesDjango
 2. Create and activate virtual environment
-     python -m venv venv
-    source venv/bin/activate   # macOS/Linux
-    venv\Scripts\activate      # Windows
+     *python -m venv venv
+    *source venv/bin/activate   # macOS/Linux
+    *venv\Scripts\activate      # Windows
 
 --- DB Setup ---
 1. Create a PostgreSQL instance locally:
-    createdb devhomes
+    *createdb devhomes
 2. Define the following variables (in a .env folder, or modify the db settings to use credentials there directly):
-    export DB_NAME=devhomes
-    export DB_USER=postgres
-    export DB_PASSWORD=yourpassword
-    export DB_HOST=localhost
-    export DB_PORT=5432
+    *export DB_NAME=devhomes
+    *export DB_USER=postgres
+    *export DB_PASSWORD=yourpassword
+    *export DB_HOST=localhost
+    *export DB_PORT=5432
 3. Run migrations:
-   python manage.py migrate
+   *python manage.py migrate
 
 --- Requirements and startup ---
 1. Set up the PostgreSQL and credentials as desctibed above.
 2. Run 'pip install -r requirements.txt' to install the requirements file
    * for MAC ARM architecture the setup is psycopg2-binary. For other OS you can use psycopg2 directly.
 3. (Optional) Populate the DB with sample data:
-    python manage.py seed_locations
-    python manage.py seed_amenities
-    python manage.py populate_db
-    python manage.py populate_inquiries
+    *python manage.py seed_locations
+    *python manage.py seed_amenities
+    *python manage.py populate_db
+    *python manage.py populate_inquiries
 4. Run the server:
-   python manage.py runserver
+   *python manage.py runserver
 
 --- Custom 404 Page ---
 A custom 404 template is implemented (templates/404.html).
