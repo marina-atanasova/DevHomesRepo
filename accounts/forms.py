@@ -30,8 +30,8 @@ class ContactForm(forms.ModelForm):
         instance = super().save(commit=False)
 
         reply_text = (instance.reply_message or "").strip()
-        if instance.status == MessageStatusChoices.NEW:
-            instance.status = MessageStatusChoices.IN_PROGRESS
+        # if instance.status == MessageStatusChoices.NEW:
+        #     instance.status = MessageStatusChoices.IN_PROGRESS
 
         if reply_text:
             instance.replied_at = timezone.now()

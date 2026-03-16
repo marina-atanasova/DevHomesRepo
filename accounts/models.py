@@ -13,9 +13,7 @@ class UserInquiry(models.Model):
     email = models.EmailField(max_length=50)
     listing = models.ForeignKey(
         Property,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.CASCADE,
         related_name="inquiries",
     )
     request_type = models.CharField(
