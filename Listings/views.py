@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, DeleteView
 from .forms import PropertyForm
 from django.shortcuts import render
-from .models import Property
-from .forms import ListingsSearchForm
+from .models import Property, Amenity
+from .forms import ListingsSearchForm, AmenityForm
 
 
 class AllListings(ListView):
@@ -26,8 +26,6 @@ def listings_search(request):
     form = ListingsSearchForm(request.GET or None)
     qs = Property.objects.all().order_by("-id")
 
-
-
     if request.GET and form.is_valid():
         q = form.cleaned_data.get("q")
         district = form.cleaned_data.get("district")
@@ -41,9 +39,11 @@ def listings_search(request):
             qs = qs.filter(
                 Q(name__icontains=q)
                 | Q(address__icontains=q)
-                | Q(district__name__icontains=q)
-                | Q(district__city__name__icontains=q)
+                | Q(city__icontains=q)
+                | Q(district__icontains=q)
             )
+        if city:
+            qs = qs.filter(city=city)
         if district:
             qs = qs.filter(district=district)
         if min_price is not None:
@@ -54,8 +54,7 @@ def listings_search(request):
             qs = qs.filter(rooms__gte=rooms)
         if amenities:
             qs = qs.filter(amenities__in=amenities).distinct()
-        if city:
-            qs = qs.filter(district__city=city)
+
 
     return render(request, "Listings/search.html", {"form": form, "listings": qs})
 
@@ -81,3 +80,37 @@ class DeleteListingView(DeleteView):
     model = Property
     success_url = "/listings"
     template_name = "Listings/delete_listing.html"
+
+
+class AmenityListView(ListView):
+    model = Amenity
+    template_name = "Listings/all_amenities.html"
+    context_object_name = "amenities"
+    ordering = ["category", "name"]
+    paginate_by = 6
+
+
+class AmenityCreateView(CreateView):
+    model = Amenity
+    form_class = AmenityForm
+    template_name = "Listings/add_amenity.html"
+    success_url = '/listings/amenities'
+
+
+class AmenityDetailView(DetailView):
+    model = Amenity
+    template_name = "Listings/amenity_detail.html"
+    context_object_name = "amenity"
+
+
+class AmenityUpdateView(UpdateView):
+    model = Amenity
+    form_class = AmenityForm
+    template_name = "Listings/edit_amenity.html"
+    success_url = '/listings/amenities'
+
+
+class AmenityDeleteView(DeleteView):
+    model = Amenity
+    template_name = "Listings/amenity_confirm_delete.html"
+    success_url = '/listings/amenities'

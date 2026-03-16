@@ -1,8 +1,8 @@
 from django import forms
 from django.utils import timezone
 
-from .choices import AptExposureChoices
-from .models import District, Amenity, Property, City
+from .choices import AptExposureChoices, CityChoices, DistrictChoices
+from .models import Amenity, Property
 
 
 class PropertyForm(forms.ModelForm):
@@ -40,7 +40,7 @@ class PropertyForm(forms.ModelForm):
         if year is None:
             return year
         current = timezone.now().year
-        if year < 1800 or year > current + 1:
+        if year < 1800 or year > current + 10:
             raise forms.ValidationError(f"Build year must be between 1800 and {current + 10}.")
         return year
 
@@ -70,18 +70,15 @@ class ListingsSearchForm(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "Search by name, address, city, district..."})
     )
 
-
-    district = forms.ModelChoiceField(
-        queryset=District.objects.none(),
+    city = forms.ChoiceField(
         required=False,
-        empty_label="Any district",
-        label="District",
-    )
-    city = forms.ModelChoiceField(
-        queryset=City.objects.all().order_by("name"),
-        required=False,
-        empty_label="Any city",
+        choices=[("", "Choose City")] + list(CityChoices.choices),
         label="City",
+    )
+    district = forms.ChoiceField(
+        required=False,
+        choices=[("", "Choose District")] + list(DistrictChoices.choices),
+        label="District",
     )
     min_price = forms.IntegerField(
         required=False,
@@ -113,7 +110,6 @@ class ListingsSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["district"].queryset = District.objects.all().order_by("city__name", "name")
         self.fields["amenities"].queryset = Amenity.objects.all().order_by("name")
 
     def clean(self):
@@ -125,3 +121,22 @@ class ListingsSearchForm(forms.Form):
             self.add_error("max_price", "Max price must be greater than or equal to Min price.")
 
         return cleaned
+
+
+class AmenityForm(forms.ModelForm):
+    class Meta:
+        model = Amenity
+        fields = "__all__"
+
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "e.g. Elevator"}),
+            "description": forms.Textarea(
+                attrs={"rows": 4, "placeholder": "Describe the amenity..."}
+            ),
+        }
+
+    def clean_name(self):
+        name = self.cleaned_data["name"].strip()
+        if len(name) < 2:
+            raise forms.ValidationError("Amenity name must be at least 2 characters long.")
+        return name

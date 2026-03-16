@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Amenity Details | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{{ amenity.name }}</h1>
+  <p>This amenity can be attached to multiple listings.</p>
+
+  <p><strong>Category:</strong> {{ amenity.category }}</p>
+  <p>
+    <strong>Description:</strong>
+    {% if amenity.description %}
+      {{ amenity.description }}
+    {% else %}
+      No description provided.
+    {% endif %}
+  </p>
+  <p><strong>Used in listings:</strong> {{ amenity.properties.count }}</p>
+
+  <div class="form-actions">
+    <a class="btn" href="{% url 'listings:edit_amenity' amenity.pk %}">Edit</a>
+    <a class="btn btn-danger" href="{% url 'listings:delete_amenity' amenity.pk %}">Delete</a>
+    <a class="btn btn-muted" href="{% url 'listings:all_amenities' %}">Back</a>
+  </div>
+</div>
+{% endblock %}

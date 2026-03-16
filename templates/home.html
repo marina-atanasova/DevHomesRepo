@@ -60,7 +60,7 @@
         <div class="top-body">
           <div class="top-title">{{ most_recent_property.name }}</div>
           <div class="top-sub">
-            {{ most_recent_property.district.city }} · {{ most_recent_property.district.name }}
+            {{ most_recent_property.city }} · {{ most_recent_property.district }}
           </div>
           <div class="top-sub">
             {{ most_recent_property.price }} · {{ most_recent_property.size }} m²
@@ -82,7 +82,7 @@
         <div class="top-body">
           <div class="top-title">{{ most_credit_property.name }}</div>
           <div class="top-sub">
-            {{ most_credit_property.district.city }} · {{ most_credit_property.district.name }}
+            {{ most_credit_property.city }} · {{ most_credit_property.district}}
           </div>
           <div class="top-sub">
             Requests: {{ most_credit_property.credit_requests_count }}
@@ -101,7 +101,7 @@
         <div class="top-body">
           <div class="top-title">{{ most_inquiry_property.name }}</div>
           <div class="top-sub">
-            {{ most_inquiry_property.district.city }} · {{ most_inquiry_property.district.name }}
+            {{ most_inquiry_property.city }} · {{ most_inquiry_property.district }}
           </div>
           <div class="top-sub">
             Inquiries: {{ most_inquiry_property.inquiries_count }}

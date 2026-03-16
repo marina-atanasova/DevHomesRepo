@@ -11,14 +11,13 @@ def home(request):
     total_credit_requests = CreditRequest.objects.count()
 
     most_recent_property = (
-        Property.objects.select_related("district__city")
+        Property.objects
         .order_by("-id")
         .first()
     )
 
     most_credit_property = (
         Property.objects
-        .select_related("district__city")
         .annotate(credit_requests_count=Count("credit_requests"))
         .filter(credit_requests_count__gt=0)
         .order_by("-credit_requests_count", "-id")
@@ -26,7 +25,7 @@ def home(request):
     )
 
     most_inquiry_property = (
-        Property.objects.select_related("district__city")
+        Property.objects
         .annotate(inquiries_count=Count("inquiries"))
         .filter(inquiries_count__gt=0)
         .order_by("-inquiries_count", "-id")

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Delete Amenity | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Delete Amenity</h1>
+  <p>Are you sure you want to delete this amenity?</p>
+  <p>This is the confirmation step before deletion.</p>
+
+  <p><strong>Name:</strong> {{ object.name }}</p>
+  <p><strong>Category:</strong> {{ object.category }}</p>
+
+  <div class="form-actions">
+    <form method="post">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+    <a class="btn btn-muted" href="{% url 'listings:amenity_detail' object.pk %}">Cancel</a>
+  </div>
+</div>
+{% endblock %}

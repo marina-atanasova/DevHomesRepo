@@ -10,16 +10,17 @@ class CityChoices(models.TextChoices):
     SHUMEN = "Shumen", "Shumen"
     VIDIN = "Vidin", "Vidin"
 
-# class DistrictChoices(models.TextChoices):
-#     MLADOST = "Mladost", "Mladost"
-#     DRUJBA = "Drujba", "Drujba"
-#     CENTER = "Center", "Center"
-#     VITOSHA = "Vitosha", "Vitosha"
-#     HIPODRUMA = "Hipodruma", "Hipodruma"
-#     NADEJA = "Nadeja", "Nadeja"
-#     LIULIN = "Liulin", "Liulin"
-#     BOROVO = "Borovo", "Borovo"
-#     OTHER = "Other", "Other"
+
+class DistrictChoices(models.TextChoices):
+    CENTER = "Center", "Center"
+    MLADOST = "Mladost", "Mladost"
+    DRUJBA = "Drujba", "Drujba"
+    LOZENETS = "Lozenets", "Lozenets"
+    TRAKIA = "Trakia", "Trakia"
+    CHAYKA = "Chayka", "Chayka"
+    LAZUR = "Lazur", "Lazur"
+    ZDRAVETS = "Zdravets", "Zdravets"
+    OTHER = "Other", "Other"
 
 class PropertyTypeChoices(models.TextChoices):
     Apartment = "Apartment", "Apartment"
@@ -48,3 +49,11 @@ class AptExposureChoices(models.TextChoices):
     E = "E", "East"
     S = "S", "South"
     W = "W", "West"
+
+
+class AmenityCategoryChoices(models.TextChoices):
+    COMFORT = "Comfort", "Comfort"
+    SECURITY = "Security", "Security"
+    OUTDOOR = "Outdoor", "Outdoor"
+    ACCESSIBILITY = "Accessibility", "Accessibility"
+    BUILDING = "Building", "Building"

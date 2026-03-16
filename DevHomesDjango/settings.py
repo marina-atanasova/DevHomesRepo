@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'DevHomesDjango.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": 'latestdevtest',
+        "NAME": 'retakedevhomes',
         "USER": 'postgres',
         "PASSWORD": '123456',
         "HOST": "localhost",

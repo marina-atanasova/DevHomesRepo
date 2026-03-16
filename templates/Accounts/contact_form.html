@@ -13,6 +13,19 @@
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }}
+
+        {% if field.name == "phone" %}
+          <small class="form-help" style="color: #b98710;">
+            Phone number must be 6–12 characters. Digits, + and / are allowed.
+          </small>
+        {% endif %}
+
+        {% if field.name == "listing" %}
+          <small class="form-help" style="color: #b98710;">
+            If no listings exist yet, please create one here:
+            <a style="text-decoration-line: underline; " href="{% url 'listings:add' %}">Add Listing</a>.
+          </small>
+        {% endif %}
         {% if field.errors %}
           <div class="errors">{{ field.errors }}</div>
         {% endif %}
