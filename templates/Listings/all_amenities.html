@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}All Amenities | DevHomes{% endblock %}
+
+{% block content %}
+<div class="top_of_page_content">
+    <h1>All Amenities</h1>
+    <p>Amenities can be attached to listings through the many-to-many field.</p>
+    <a class="btn" href="{% url 'listings:add_amenity' %}">Add Amenity</a>
+</div>
+
+{% if amenities %}
+  <div class="grid">
+    {% for amenity in amenities %}
+      <div class="card">
+        <h2>{{ amenity.name }}</h2>
+        <p><strong>Category:</strong> {{ amenity.category }}</p>
+        <p>
+          <strong>Description:</strong>
+          {% if amenity.description %}
+            {{ amenity.description }}
+          {% else %}
+            No description provided.
+          {% endif %}
+        </p>
+        <p><strong>Used in listings:</strong> {{ amenity.properties.count }}</p>
+
+        <a class="btn" href="{% url 'listings:amenity_detail' amenity.pk %}">Details</a>
+        <a class="btn" href="{% url 'listings:edit_amenity' amenity.pk %}">Edit</a>
+        <a class="btn btn-danger" href="{% url 'listings:delete_amenity' amenity.pk %}">Delete</a>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card">
+    <p>No amenities yet.</p>
+  </div>
+{% endif %}
+
+{% if is_paginated %}
+  <nav class="pager" aria-label="Pagination">
+    {% if page_obj.has_previous %}
+      <a class="pager-btn" href="?page={{ page_obj.previous_page_number }}">← Prev</a>
+    {% else %}
+      <span class="pager-btn is-disabled">← Prev</span>
+    {% endif %}
+
+    <span class="pager-info">
+      Page <strong>{{ page_obj.number }}</strong> / <strong>{{ page_obj.paginator.num_pages }}</strong>
+    </span>
+
+    {% if page_obj.has_next %}
+      <a class="pager-btn" href="?page={{ page_obj.next_page_number }}">Next →</a>
+    {% else %}
+      <span class="pager-btn is-disabled">Next →</span>
+    {% endif %}
+  </nav>
+{% endif %}
+{% endblock %}

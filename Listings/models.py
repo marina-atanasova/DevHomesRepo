@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from Listings.choices import CityChoices, PropertyTypeChoices, BuildTypeChoices, HeatingTypeChoices, \
-    AptExposureChoices, DistrictChoices
+    AptExposureChoices, DistrictChoices, AmenityCategoryChoices
 
 
 # Create your models here.
@@ -13,6 +13,12 @@ from Listings.choices import CityChoices, PropertyTypeChoices, BuildTypeChoices,
 
 class Amenity(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    category = models.CharField(
+        max_length=30,
+        choices=AmenityCategoryChoices.choices,
+        default=AmenityCategoryChoices.COMFORT,
+    )
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name

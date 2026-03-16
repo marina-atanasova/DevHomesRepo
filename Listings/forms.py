@@ -121,3 +121,22 @@ class ListingsSearchForm(forms.Form):
             self.add_error("max_price", "Max price must be greater than or equal to Min price.")
 
         return cleaned
+
+
+class AmenityForm(forms.ModelForm):
+    class Meta:
+        model = Amenity
+        fields = "__all__"
+
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "e.g. Elevator"}),
+            "description": forms.Textarea(
+                attrs={"rows": 4, "placeholder": "Describe the amenity..."}
+            ),
+        }
+
+    def clean_name(self):
+        name = self.cleaned_data["name"].strip()
+        if len(name) < 2:
+            raise forms.ValidationError("Amenity name must be at least 2 characters long.")
+        return name

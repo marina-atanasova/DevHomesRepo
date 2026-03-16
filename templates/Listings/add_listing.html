@@ -23,6 +23,7 @@
   <div class="row">
     <div>
       <h1>Add New Listing</h1>
+      <p><span class="required">*</span> fields must be set before submitting.</p>
     </div>
 
     <div class="row-end">
@@ -35,36 +36,43 @@
   <form method="post">
     {% csrf_token %}
 
-    <!-- === MAIN TWO COLUMN GRID === -->
     <div class="form-grid">
 
       <!-- Name -->
       <div>
-        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        <label for="{{ form.name.id_for_label }}">
+          {{ form.name.label }} <span class="required">*</span>
+        </label>
         {{ form.name }}
         {{ form.name.errors }}
       </div>
 
       <!-- Address -->
       <div>
-        <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+        <label for="{{ form.address.id_for_label }}">
+          {{ form.address.label }} <span class="required">*</span>
+        </label>
         {{ form.address }}
         {{ form.address.errors }}
       </div>
 
       <!-- City -->
-        <div>
-          <label for="{{ form.city.id_for_label }}">City</label>
-          {{ form.city }}
-          {{ form.city.errors }}
-        </div>
+      <div>
+        <label for="{{ form.city.id_for_label }}">
+          City <span class="required">*</span>
+        </label>
+        {{ form.city }}
+        {{ form.city.errors }}
+      </div>
 
-        <!-- District -->
-        <div>
-          <label for="{{ form.district.id_for_label }}">District</label>
-          {{ form.district }}
-          {{ form.district.errors }}
-        </div>
+      <!-- District -->
+      <div>
+        <label for="{{ form.district.id_for_label }}">
+          District <span class="required">*</span>
+        </label>
+        {{ form.district }}
+        {{ form.district.errors }}
+      </div>
 
       <!-- Property Type -->
       <div>
@@ -82,12 +90,14 @@
 
       <!-- Price -->
       <div>
-        <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+        <label for="{{ form.price.id_for_label }}">
+          {{ form.price.label }} <span class="required">*</span>
+        </label>
         {{ form.price }}
         {{ form.price.errors }}
       </div>
 
-      <!-- Price per sqm (auto-calculated / disabled) -->
+      <!-- Price per sqm -->
       {% if form.price_per_sqm %}
       <div>
         <label for="{{ form.price_per_sqm.id_for_label }}">{{ form.price_per_sqm.label }}</label>
@@ -95,12 +105,12 @@
       </div>
       {% endif %}
 
-
-    <div>
-      <label for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
-      {{ form.floor }}
-      {{ form.floor.errors }}
-    </div>
+      <!-- Floor -->
+      <div>
+        <label for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
+        {{ form.floor }}
+        {{ form.floor.errors }}
+      </div>
 
       <!-- Bedrooms -->
       <div>
@@ -128,8 +138,11 @@
 
       <!-- Build Year -->
       <div>
-        <label for="{{ form.build_year.id_for_label }}">{{ form.build_year.label }}</label>
+        <label for="{{ form.build_year.id_for_label }}">
+          {{ form.build_year.label }} <span class="required">*</span>
+        </label>
         {{ form.build_year }}
+        {{ form.build_year.errors }}
       </div>
 
       <!-- Build Type -->
@@ -146,12 +159,13 @@
 
     </div>
 
-    <!-- === FEATURES SECTION (SIDE BY SIDE) === -->
     <div class="form-grid mt-18">
 
       <!-- Exposure -->
       <div class="checkbox-grid checkbox-grid-compact">
-        <label>{{ form.exposure.label }}</label>
+        <label>
+          {{ form.exposure.label }} <span class="required">*</span>
+        </label>
         {{ form.exposure }}
         {{ form.exposure.errors }}
       </div>
@@ -163,7 +177,7 @@
         {{ form.amenities.errors }}
       </div>
 
-      <!-- Description LAST -->
+      <!-- Description -->
       <div class="form-span-2">
         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
         {{ form.description }}

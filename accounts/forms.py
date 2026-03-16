@@ -9,8 +9,14 @@ class ContactInquiryForm(forms.ModelForm):
     class Meta:
         model = UserInquiry
         fields = ["first_name", "last_name", "email", "phone", "listing", "message"]
-        widgets = {"message": forms.Textarea(attrs={"rows": 5})}
-
+        widgets = {
+            "phone": forms.TextInput(attrs={
+                "placeholder": "02/8123456 or +35988876556 or 0888445445"
+            }),
+            "message": forms.Textarea(attrs={
+                "rows": 5
+            }),
+        }
 
 class ContactForm(forms.ModelForm):
     class Meta:

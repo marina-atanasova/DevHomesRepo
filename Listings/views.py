@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, DeleteView
 from .forms import PropertyForm
 from django.shortcuts import render
-from .models import Property
-from .forms import ListingsSearchForm
+from .models import Property, Amenity
+from .forms import ListingsSearchForm, AmenityForm
 
 
 class AllListings(ListView):
@@ -80,3 +80,37 @@ class DeleteListingView(DeleteView):
     model = Property
     success_url = "/listings"
     template_name = "Listings/delete_listing.html"
+
+
+class AmenityListView(ListView):
+    model = Amenity
+    template_name = "Listings/all_amenities.html"
+    context_object_name = "amenities"
+    ordering = ["category", "name"]
+    paginate_by = 6
+
+
+class AmenityCreateView(CreateView):
+    model = Amenity
+    form_class = AmenityForm
+    template_name = "Listings/add_amenity.html"
+    success_url = '/listings/amenities'
+
+
+class AmenityDetailView(DetailView):
+    model = Amenity
+    template_name = "Listings/amenity_detail.html"
+    context_object_name = "amenity"
+
+
+class AmenityUpdateView(UpdateView):
+    model = Amenity
+    form_class = AmenityForm
+    template_name = "Listings/edit_amenity.html"
+    success_url = '/listings/amenities'
+
+
+class AmenityDeleteView(DeleteView):
+    model = Amenity
+    template_name = "Listings/amenity_confirm_delete.html"
+    success_url = '/listings/amenities'

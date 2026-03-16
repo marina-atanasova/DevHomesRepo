@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Edit Amenity | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Edit Amenity</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}
+        <div class="errors">{{ form.name.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+      {{ form.category }}
+      {% if form.category.errors %}
+        <div class="errors">{{ form.category.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      {{ form.description }}
+      {% if form.description.errors %}
+        <div class="errors">{{ form.description.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" type="submit">Save</button>
+      <a class="btn btn-muted" href="{% url 'listings:amenity_detail' object.pk %}">Cancel</a>
+          <a href="{% url 'listings:delete_amenity' object.pk %}" class="btn btn-danger">Delete</a>
+
+    </div>
+  </form>
+</div>
+{% endblock %}

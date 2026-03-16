@@ -49,3 +49,11 @@ class AptExposureChoices(models.TextChoices):
     E = "E", "East"
     S = "S", "South"
     W = "W", "West"
+
+
+class AmenityCategoryChoices(models.TextChoices):
+    COMFORT = "Comfort", "Comfort"
+    SECURITY = "Security", "Security"
+    OUTDOOR = "Outdoor", "Outdoor"
+    ACCESSIBILITY = "Accessibility", "Accessibility"
+    BUILDING = "Building", "Building"

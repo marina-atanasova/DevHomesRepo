@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 
 from Listings.models import Property
@@ -6,10 +7,18 @@ from accounts.choices import MessageStatusChoices, RequestTypeChoices
 
 # Create your models here.
 
+phone_validator = RegexValidator(
+    regex=r'^[0-9+/]{6,12}$',
+    message="Phone number must be 6–12 characters and may contain digits, + or /."
+)
+
 class UserInquiry(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(
+        max_length=12,
+        validators=[phone_validator],
+    )
     email = models.EmailField(max_length=50)
     listing = models.ForeignKey(
         Property,
