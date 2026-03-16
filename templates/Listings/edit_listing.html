@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}Edit Listing | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+
+{% if form.build_year.errors %}
+  <div class="field-errors">
+    {% for error in form.build_year.errors %}
+      <div class="error-message">{{ error }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if form.non_field_errors %}
+  <div class="field-errors">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+  <div class="row">
+    <div>
+      <h1>Edit Listing</h1>
+
+      {% if form.instance.pk and form.instance.district %}
+        <p class="meta-line">
+          <strong>City:</strong>
+          <span class="readonly-pill">{{ form.instance.city }}</span>
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="row-end">
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Back</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <form method="post">
+    {% csrf_token %}
+
+
+    <!-- === MAIN TWO COLUMN GRID === -->
+    <div class="form-grid">
+
+      <!-- Name -->
+      <div>
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+
+      <!-- Address -->
+      <div>
+        <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+        {{ form.address }}
+        {{ form.address.errors }}
+      </div>
+
+      <!-- City -->
+        <div>
+          <label for="{{ form.city.id_for_label }}">City</label>
+          {{ form.city }}
+          {{ form.city.errors }}
+        </div>
+
+        <!-- District -->
+        <div>
+          <label for="{{ form.district.id_for_label }}">District</label>
+          {{ form.district }}
+          {{ form.district.errors }}
+        </div>
+
+        <div>
+          <label for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
+          {{ form.floor }}
+          {{ form.floor.errors }}
+        </div>
+
+      <!-- Property Type -->
+      <div>
+        <label for="{{ form.property_type.id_for_label }}">{{ form.property_type.label }}</label>
+        {{ form.property_type }}
+        {{ form.property_type.errors }}
+      </div>
+
+      <!-- Size -->
+      <div>
+        <label for="{{ form.size.id_for_label }}">{{ form.size.label }}</label>
+        {{ form.size }}
+        {{ form.size.errors }}
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+        {{ form.price }}
+        {{ form.price.errors }}
+      </div>
+
+
+
+      <!-- Bedrooms -->
+      <div>
+        <label for="{{ form.bedrooms.id_for_label }}">{{ form.bedrooms.label }}</label>
+        {{ form.bedrooms }}
+      </div>
+
+      <!-- Rooms -->
+      <div>
+        <label for="{{ form.rooms.id_for_label }}">{{ form.rooms.label }}</label>
+        {{ form.rooms }}
+      </div>
+
+      <!-- Bathrooms -->
+      <div>
+        <label for="{{ form.bathrooms.id_for_label }}">{{ form.bathrooms.label }}</label>
+        {{ form.bathrooms }}
+      </div>
+
+      <!-- Balconies -->
+      <div>
+        <label for="{{ form.balconies.id_for_label }}">{{ form.balconies.label }}</label>
+        {{ form.balconies }}
+      </div>
+
+      <!-- Build Year -->
+      <div>
+        <label for="{{ form.build_year.id_for_label }}">{{ form.build_year.label }}</label>
+        {{ form.build_year }}
+      </div>
+
+      <!-- Build Type -->
+      <div>
+        <label for="{{ form.build_type.id_for_label }}">{{ form.build_type.label }}</label>
+        {{ form.build_type }}
+      </div>
+
+      <!-- Heating -->
+      <div>
+        <label for="{{ form.heating.id_for_label }}">{{ form.heating.label }}</label>
+        {{ form.heating }}
+      </div>
+
+    </div>
+
+
+    <div class="form-grid mt-18">
+
+
+
+  <!-- Exposure (LEFT column) -->
+  <div class="checkbox-grid checkbox-grid-compact">
+    <label>{{ form.exposure.label }}</label>
+    {{ form.exposure }}
+    {{ form.exposure.errors }}
+  </div>
+
+  <!-- Amenities (RIGHT column) -->
+  <div class="checkbox-grid checkbox-grid-compact">
+    <label>{{ form.amenities.label }}</label>
+    {{ form.amenities }}
+    {{ form.amenities.errors }}
+  </div>
+
+  <!-- Description LAST, full width -->
+  <div class="form-span-2">
+    <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+    {{ form.description }}
+    {{ form.description.errors }}
+  </div>
+
+
+
+
+
+</div>
+
+    <div class="form-actions mt-18">
+      <button type="submit" class="btn">Save Changes</button>
+      <a href="{% url 'listings:all' %}" class="btn btn-muted">Cancel</a>
+    </div>
+
+  </form>
+
+</div>
+{% endblock %}
+
+
+{##}
+{#{% extends "base.html" %}#}
+{##}
+{#{% block title %}#}
+{#    Edit Listing | DevHomes#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="card">#}
+{#        <h1>Edit Listing</h1>#}
+{##}
+{#        <form method="post">#}
+{#            {% csrf_token %}#}
+{##}
+{#            {{ form.non_field_errors }}#}
+{##}
+{#            {% for field in form %}#}
+{#                <div class="form-group">#}
+{#                    <label for="{{ field.id_for_label }}">#}
+{#                        {{ field.label }}#}
+{#                    </label>#}
+{##}
+{#                    {{ field }}#}
+{##}
+{#                    {% if form.instance.pk and form.instance.district %}#}
+{#                        <div class="form-group">#}
+{#                            <label>City</label>#}
+{#                            <input type="text"#}
+{#                                   value="{{ form.instance.district.city }}"#}
+{#                                   disabled>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{##}
+{#                    {% if field.errors %}#}
+{#                        <div class="errors">#}
+{#                            {{ field.errors }}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{#            <div style="margin-top: 20px;">#}
+{#                <button type="submit" class="btn">#}
+{#                    Save Changes#}
+{#                </button>#}
+{##}
+{#                <a href="{% url 'listings:all' %}"#}
+{#                   class="btn"#}
+{#                   style="background:#6b7280;">#}
+{#                    Back#}
+{#                </a>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#{% endblock %}#}

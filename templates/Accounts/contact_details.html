@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Inquiry Details | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="row">
+    <div>
+      <h1>Inquiry Details</h1>
+      <p>Full message and tracking details.</p>
+    </div>
+
+    <div class="row-end">
+      <a class="btn btn-muted" href="{% url 'accounts:contact-dashboard' %}">Back</a>
+      <a class="btn" href="{% url 'accounts:contact-edit' object.pk %}">Edit</a>
+      <a class="btn btn-danger" href="{% url 'accounts:contact-delete' object.pk %}">Delete</a>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2 mt-14">
+  <div class="card">
+    <h2>Message</h2>
+    <p style="white-space: pre-wrap; color: var(--text);">{{ object.message }}</p>
+
+    {% if object.reply_message %}
+      <hr class="divider">
+      <h2>Reply</h2>
+      <p style="white-space: pre-wrap; color: var(--text);">{{ object.reply_message }}</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Summary</h2>
+
+    <p><strong>Name:</strong><br>{{ object.first_name }} {{ object.last_name }}</p>
+    <p><strong>Email:</strong><br>{{ object.email }}</p>
+    <p><strong>Phone:</strong><br>{{ object.phone }}</p>
+
+    <p><strong>Request type:</strong><br>{{ object.get_request_type_display }}</p>
+    <p><strong>Status:</strong><br>{{ object.get_status_display }}</p>
+
+    <p><strong>Created:</strong><br>{{ object.created_at|date:"Y-m-d H:i" }}</p>
+
+    {% if object.replied_at %}
+      <p><strong>Replied at:</strong><br>{{ object.replied_at|date:"Y-m-d H:i" }}</p>
+    {% endif %}
+
+    {% if object.closed_at %}
+      <p><strong>Closed at:</strong><br>{{ object.closed_at|date:"Y-m-d H:i" }}</p>
+    {% endif %}
+
+    {% if object.listing %}
+      <hr class="divider">
+      <h2>Linked listing</h2>
+      <p>
+        <strong>{{ object.listing.address }}</strong><br>
+        {{ object.listing.price }} · {{ object.listing.size }} m²
+      </p>
+
+      {# Uncomment and adjust url name if you have property detail url #}
+      <a class="btn btn-dark" href="{% url 'listings:detail' object.listing.pk %}">Open listing</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

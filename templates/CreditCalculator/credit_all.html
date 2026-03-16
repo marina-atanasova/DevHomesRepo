@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Credit Requests | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="row">
+    <div>
+      <h1>Credit Requests</h1>
+      <p>All calculator submissions saved for statistics.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card-stack mt-14">
+  {% if credit_requests %}
+    {% for req in credit_requests %}
+      <div class="card">
+        <div class="row">
+          <div>
+            <h2 style="margin:0 0 6px; font-size:18px;">
+              Request #{{ req.id }}
+            </h2>
+
+            <p style="margin:0;">
+              <strong>Created:</strong> {{ req.created_at|date:"Y-m-d H:i" }} ·
+              <strong>Years:</strong> {{ req.repayment_years }} ·
+              <strong>Interest:</strong> {{ req.interest_rate }}%
+            </p>
+
+            <p style="margin:8px 0 0;">
+              <strong>Price:</strong> {{ req.property_price }} ·
+              <strong>Down payment:</strong> {{ req.down_payment }}
+            </p>
+
+            {% if req.linked_property %}
+              <p style="margin:8px 0 0;">
+                <strong>Linked property:</strong> {{ req.linked_property.name }}
+              </p>
+            {% else %}
+              <p style="margin:8px 0 0;">
+                <strong>Linked property:</strong> None
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="row-end">
+            <a class="btn btn-danger" href="{% url 'CreditCalculator:credit_delete' req.pk %}">
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="card">
+      <h2 style="font-size:18px; margin-bottom:6px;">No credit requests yet</h2>
+      <p>When users submit the calculator form, requests will appear here.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

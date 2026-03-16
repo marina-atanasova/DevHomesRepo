@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}DevHomes{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+
+<header class="navbar">
+  <div class="container nav-inner">
+
+    <!-- Logo Left -->
+    <a class="brand-link" href="{% url 'home' %}">
+      <img class="brand-logo" src="{% static 'img/devhomes-logo.png' %}" alt="DevHomes logo">
+      <span class="brand-text">DevHomes</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="nav-links">
+
+      <a class="nav-link" href="{% url 'home' %}">Home</a>
+
+      <!-- Listings Dropdown -->
+      <div class="nav-item dropdown">
+        <span class="nav-link">Listings ▾</span>
+        <div class="dropdown-menu">
+          <a href="{% url 'listings:all' %}">All Listings</a>
+          <a href="{% url 'listings:search' %}">Search Listings</a>
+          <a href="{% url 'listings:add' %}">Add Listing</a>
+        </div>
+      </div>
+
+      <!-- Contacts Dropdown -->
+      <div class="nav-item dropdown">
+        <span class="nav-link">Inquiries ▾</span>
+        <div class="dropdown-menu">
+          <a href="{% url 'accounts:contact-dashboard' %}">Dashboard</a>
+          <a href="{% url 'accounts:contact' %}">New Inquiry</a>
+        </div>
+      </div>
+
+        <!-- Tools Dropdown -->
+        <div class="nav-item dropdown">
+          <span class="nav-link">Tools ▾</span>
+          <div class="dropdown-menu">
+            <a href="{% url 'CreditCalculator:credit' %}">Credit Calculator</a>
+            <a href="{% url 'CreditCalculator:credit_all' %}">Credit Requests</a>
+          </div>
+        </div>
+    </nav>
+
+  </div>
+</header>
+
+  </div>
+</header>
+
+<main class="container">
+  {% block content %}{% endblock %}
+</main>
+
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>DevHomes</strong><br>
+      Your All-In-One Real Estate Platform
+    </div>
+
+    <div class="footer-links">
+      <a href="{% url 'listings:all' %}">Listings</a>
+      <a href="{% url 'accounts:contact-dashboard' %}">Inquiries</a>
+      <a href="{% url 'CreditCalculator:credit' %}">Calculator</a>
+    </div>
+
+    <div class="footer-meta">
+      © {{ now|date:"Y" }} DevHomes. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

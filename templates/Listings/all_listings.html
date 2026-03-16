@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}All Listings | DevHomes{% endblock %}
+{% block content %}
+    <div class="top_of_page_content">
+        <h1>All Listings</h1>
+    </div>
+
+
+  {% if listings %}
+    <div class="grid">
+      {% for p in listings %}
+        <div class="card">
+          <h2>{{ p.name }}</h2>
+            <p>{{ p.address }}</p>
+        <p><strong>City:</strong> {{ p.city }}</p>
+        <p><strong>District:</strong> {{ p.district }}</p>
+          <p><strong>Price:</strong> {{ p.price }} </p>
+            {% if p.price_per_sqm %}
+                <p><strong>Price / m²:</strong> {{ p.price_per_sqm|floatformat:2 }} EUR/m²</p>
+            {% endif %}
+            <p><strong>ID:</strong> {{ p.pk }}</p>
+
+          <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
+          <p><strong>Bathrooms:</strong> {{ p.bathrooms }} | <strong>Balconies:</strong> {{ p.balconies }}</p>
+
+
+            <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>
+            <a class="btn" href="{% url 'listings:edit' p.pk %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'listings:delete' p.pk %}">Delete</a>
+
+
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card"><p>No listings yet.</p></div>
+  {% endif %}
+        {% if is_paginated %}
+      <nav class="pager" aria-label="Pagination">
+        {% if page_obj.has_previous %}
+          <a class="pager-btn" href="?page={{ page_obj.previous_page_number }}">← Prev</a>
+        {% else %}
+          <span class="pager-btn is-disabled">← Prev</span>
+        {% endif %}
+
+        <span class="pager-info">
+          Page <strong>{{ page_obj.number }}</strong> / <strong>{{ page_obj.paginator.num_pages }}</strong>
+        </span>
+
+        {% if page_obj.has_next %}
+          <a class="pager-btn" href="?page={{ page_obj.next_page_number }}">Next →</a>
+        {% else %}
+          <span class="pager-btn is-disabled">Next →</span>
+        {% endif %}
+  </nav>
+{% endif %}
+{% endblock %}
