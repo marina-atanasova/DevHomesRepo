@@ -49,8 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'accounts',
     'CreditCalculator',
+    'users',
 
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,7 +92,7 @@ WSGI_APPLICATION = 'DevHomesDjango.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": 'retakedevhomes',
+        "NAME": 'devhomesadvanced',
         "USER": 'postgres',
         "PASSWORD": '123456',
         "HOST": "localhost",

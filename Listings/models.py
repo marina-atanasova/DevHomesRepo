@@ -1,6 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP
 from random import choices
 
+from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
@@ -25,6 +26,15 @@ class Amenity(models.Model):
 
 
 class Property(models.Model):
+    broker = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='broker_listings',
+        limit_choices_to={'role': 'broker'},
+    )
+
     name = models.CharField(max_length=150)
     address = models.CharField("Address", max_length=255)
     city = models.CharField(choices=CityChoices)

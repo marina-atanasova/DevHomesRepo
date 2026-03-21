@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -13,6 +14,14 @@ phone_validator = RegexValidator(
 )
 
 class UserInquiry(models.Model):
+    posted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='inquiries',
+        limit_choices_to={'role': 'customer'},
+    )
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     phone = models.CharField(
