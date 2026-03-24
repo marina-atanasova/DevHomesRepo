@@ -9,6 +9,9 @@
   <p><strong>District:</strong> {{ object.district }}</p>
     <p><strong>City:</strong> {{ object.city }}</p>
 
+    {% if object.broker %}
+        <p><strong>Created by:</strong> {{ object.broker.username }}</p>
+    {% endif %}
   <p><strong>Price:</strong> {{ object.price }} EUR</p>
 
   {% if object.price_per_sqm %}
@@ -67,7 +70,22 @@
 
   <div style="margin-top: 18px;">
     <a class="btn" href="{% url 'listings:all' %}">Back to all listings</a>
-    <a class="btn" href="{% url 'listings:edit' object.pk %}">Edit</a>
+    {% if user.is_authenticated and user == object.broker or user.is_superuser %}
+        <a href="{% url 'listings:edit' object.pk %}">Edit</a>
+        <a href="{% url 'listings:delete' object.pk %}">Delete</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <form action="{% url 'listings:toggle-favorite' object.pk %}" method="post">
+            {% csrf_token %}
+            <button class="btn" type="submit">
+                {% if object in user.favorite_properties.all %}
+                    Remove from favorites
+                {% else %}
+                    Add to favorites
+                {% endif %}
+            </button>
+        </form>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

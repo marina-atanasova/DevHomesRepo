@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import PropertyDetailView, AddListingView, AllListings, EditListingView, DeleteListingView, AmenityListView, \
-    AmenityCreateView, AmenityDetailView, AmenityUpdateView, AmenityDeleteView
+    AmenityCreateView, AmenityDetailView, AmenityUpdateView, AmenityDeleteView, toggle_favorite
 
 app_name = "listings"
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path("amenities/<int:pk>/", AmenityDetailView.as_view(), name="amenity_detail"),
     path("amenities/<int:pk>/edit/", AmenityUpdateView.as_view(), name="edit_amenity"),
     path("amenities/<int:pk>/delete/", AmenityDeleteView.as_view(), name="delete_amenity"),
+    path("<int:pk>/favorite/", toggle_favorite, name="toggle-favorite"),
 
 
 ]

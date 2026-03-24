@@ -56,4 +56,7 @@ def home(request):
     }
 
     return render(request, "home.html", context)
-    return render(request, "home.html", context=context)
+
+
+def custom_403(request, exception):
+    return render(request, "errors/403.html", status=403)

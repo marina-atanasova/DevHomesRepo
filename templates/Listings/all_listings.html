@@ -22,7 +22,11 @@
 
           <p><strong>Rooms:</strong> {{ p.rooms }} | <strong>Bedrooms:</strong> {{ p.bedrooms }}</p>
           <p><strong>Bathrooms:</strong> {{ p.bathrooms }} | <strong>Balconies:</strong> {{ p.balconies }}</p>
-
+            {% if p.broker %}
+                <p><strong>Created by:</strong> {{ p.broker.username }}</p>
+            {% else %}
+                <p><strong>Created by:</strong> Unknown</p>
+            {% endif %}
 
             <a class="btn" href="{% url 'listings:detail' p.pk %}">Details</a>
             <a class="btn" href="{% url 'listings:edit' p.pk %}">Edit</a>

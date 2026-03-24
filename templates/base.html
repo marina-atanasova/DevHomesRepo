@@ -28,7 +28,24 @@
 
     <!-- Navigation -->
     <nav class="nav-links">
+     <!-- Example Login Message -->
+        {% if user.is_authenticated %}
+            <p>
+                Hello, {{ user.username }} |
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Logout</button>
+                </form>
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'login' %}">Login</a>
+            </p>
+        {% endif %}
 
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+        {% endif %}
       <a class="nav-link" href="{% url 'home' %}">Home</a>
 
       <!-- Listings Dropdown -->
@@ -37,9 +54,14 @@
         <div class="dropdown-menu">
           <a href="{% url 'listings:all' %}">All Listings</a>
           <a href="{% url 'listings:search' %}">Search Listings</a>
-          <a href="{% url 'listings:add' %}">Add Listing</a>
+          {% if user.is_authenticated %}
+            {% if user.role == "broker" or user.is_superuser %}
+            <a href="{% url 'listings:add' %}">Add Listing</a>
+              <a href="{% url 'listings:add_amenity' %}">Add Amenity</a>
+        {% endif %}
+        {% endif %}
             <a href="{% url 'listings:all_amenities' %}">All Amenities</a>
-            <a href="{% url 'listings:add_amenity' %}">Add Amenity</a>
+
         </div>
       </div>
 

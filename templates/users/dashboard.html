@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="card">
+    <h2>Account</h2>
+    <p><strong>Welcome:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+
+    <div class="actions">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+<h2>Favorite Listings ({{ favorite_listings.count }})</h2>
+{% for listing in favorite_listings %}
+    <div class="card">
+        <h3>{{ listing.name }}</h3>
+        <p>{{ listing.address }}</p>
+
+        <div class="actions">
+            <a class="btn" href="{% url 'listings:detail' listing.pk %}">
+                View Details
+            </a>
+
+            <form action="{% url 'listings:toggle-favorite' listing.pk %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">
+                    Remove
+                </button>
+            </form>
+        </div>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No favorites yet.</p>
+    </div>
+{% endfor %}
+
+<hr>
+
+<h2>My Inquiries ({{ inquiries.count }})</h2>
+{% for inquiry in inquiries %}
+    <div class="card">
+        <h3>Inquiry for {{ inquiry.listing.name }}</h3>
+        {% if inquiry.posted_by %}
+            <p><strong>Created by:</strong> {{ inquiry.posted_by.username }}</p>
+        {% endif %}
+        <p><strong>Created on:</strong> {{ inquiry.created_at }}</p>
+        <p><strong>Status:</strong> {{ inquiry.status }}</p>
+
+        <div class="actions">
+            <a class="btn" href="{% url 'accounts:contact-detail' inquiry.pk %}">
+                View Details
+            </a>
+            <a class="btn" href="{% url 'listings:detail' inquiry.listing.pk %}">
+                View Listing
+            </a>
+                {% if user == inquiry.posted_by or user == inquiry.listing.broker or user.is_superuser %}
+                    <a class="btn btn-danger" href="{% url 'accounts:contact-delete' inquiry.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+
+        </div>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No inquiries yet.</p>
+    </div>
+{% endfor %}
+
+<hr>
+
+<h2>Credit Requests ({{ credit_requests.count }})</h2>
+{% for request in credit_requests %}
+    <div class="card">
+        <h3>Credit Request</h3>
+        {% if request.created_by %}
+            <p><strong>Created by:</strong> {{ request.created_by.username }}</p>
+        {% else %}
+            <p><strong>Created by:</strong> Guest</p>
+        {% endif %}
+        <p><strong>Created on:</strong> {{ request.created_at }}</p>
+        <p><strong>Property price:</strong> {{ request.property_price }}</p>
+
+        {% if request.linked_property %}
+            <p><strong>Linked property:</strong> {{ request.linked_property.name }}</p>
+        {% endif %}
+
+        <div class="actions">
+
+                {% if user == request.created_by or user.is_superuser %}
+                    <a class="btn btn-danger" href="{% url 'CreditCalculator:credit_delete' request.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+
+        </div>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No credit requests.</p>
+    </div>
+{% endfor %}
+
+{% if user.role == "broker" %}
+    <hr>
+
+    <h2>My Listings ({{ my_listings.count }})</h2>
+    {% for listing in my_listings %}
+        <div class="card">
+            <h3>{{ listing.name }}</h3>
+            <p>{{ listing.address }}</p>
+
+            <div class="actions">
+                <a class="btn" href="{% url 'listings:detail' listing.pk %}">
+                    View Details
+                </a>
+
+                <a class="btn btn-danger" href="{% url 'listings:delete' listing.pk %}">
+                    Delete
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="card">
+            <p>No listings yet.</p>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
