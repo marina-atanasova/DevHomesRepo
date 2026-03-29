@@ -7,7 +7,7 @@
     <p>Amenities can be attached to listings through the many-to-many field.</p>
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.groups.all.0.name == "Broker" %}
-            <a href="{% url 'amenity-create' %}">Add amenity</a>
+            <a href="{% url 'listings:add_amenity' %}">Add amenity</a>
         {% endif %}
     {% endif %}
 </div>
