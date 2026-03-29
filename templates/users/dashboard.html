@@ -14,7 +14,9 @@
             {% csrf_token %}
             <button class="btn btn-danger" type="submit">Logout</button>
         </form>
+
     </div>
+<a class="btn btn-light" href="{% url 'simple_password_reset' %}">Change Password</a>
 </div>
 
 <hr>

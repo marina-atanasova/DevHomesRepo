@@ -69,7 +69,7 @@
             {% endif %}
           </div>
         </div>
-        <a class="btn btn-light" href="{% url 'listings:detail' most_recent_property.pk %}">View</a>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_recent_property.pk %}">View Property</a>
       {% else %}
         <div class="top-body"><p>No listings yet.</p></div>
       {% endif %}
@@ -88,7 +88,7 @@
             Requests: {{ most_credit_property.credit_requests_count }}
           </div>
         </div>
-        <a class="btn btn-light" href="{% url 'listings:detail' most_credit_property.pk %}">View</a>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_credit_property.pk %}">View Property</a>
       {% else %}
         <div class="top-body"><p>No credit requests yet.</p></div>
       {% endif %}
@@ -107,7 +107,7 @@
             Inquiries: {{ most_inquiry_property.inquiries_count }}
           </div>
         </div>
-        <a class="btn btn-light" href="{% url 'listings:detail' most_inquiry_property.pk %}">View</a>
+        <a class="btn btn-light" href="{% url 'listings:detail' most_inquiry_property.pk %}">View Property</a>
       {% else %}
         <div class="top-body"><p>No inquiries yet.</p></div>
       {% endif %}
@@ -132,7 +132,7 @@
         <div class="message-sub">{{ inquiry.get_status_display }} · {{ inquiry.created_at|date:"Y-m-d" }}</div>
         <div class="message-text">{{ inquiry.message|truncatechars:110 }}</div>
 
-        <a class="btn btn-light" href="{% url 'accounts:contact-detail' inquiry.pk %}">View</a>
+        <a class="btn btn-light" href="{% url 'accounts:contact-detail' inquiry.pk %}">View Property</a>
       </div>
     {% empty %}
       <div class="card">
