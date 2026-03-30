@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
 
-
-
+import listings_api
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -13,6 +12,7 @@ urlpatterns = [
     path("", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("", include("CreditCalculator.urls")),
     path("users/", include("users.urls")),
+    path("api/", include("listings_api.urls")),
 ]
 
 handler403 = "core.views.custom_403"

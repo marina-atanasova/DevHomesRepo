@@ -1,0 +1,44 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
+from users.models import User, UserRole
+
+
+class UserRegisterForm(UserCreationForm):
+    role = forms.ChoiceField(
+        choices=UserRole.choices,
+        widget=forms.RadioSelect,
+        initial=UserRole.CUSTOMER,
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username","first_name", "last_name", "email", "phone", "role", "password1", "password2")
+
+
+class SimplePasswordResetForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput,
+    )
+    new_password2 = forms.CharField(
+        label="Confirm new password",
+        widget=forms.PasswordInput,
+    )
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if not User.objects.filter(username=username).exists():
+            raise forms.ValidationError("No user with this username exists.")
+        return username
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("new_password1")
+        password2 = cleaned_data.get("new_password2")
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords do not match.")
+
+        return cleaned_data

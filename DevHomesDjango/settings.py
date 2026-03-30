@@ -30,8 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)r-8hywu+xvw@v1jk#)&$eo9w8f#so1+-63$w3sfp5l&h*dd)r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
@@ -50,6 +49,8 @@ INSTALLED_APPS = [
     'accounts',
     'CreditCalculator',
     'users',
+    'rest_framework',
+    'listings_api'
 
 ]
 
@@ -142,3 +143,13 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+}
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@devhomes.local"

@@ -18,6 +18,18 @@ class ContactInquiryForm(forms.ModelForm):
             }),
         }
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+        if user and user.is_authenticated:
+            print(user)
+            self.fields["first_name"].initial = user.first_name
+            self.fields["last_name"].initial = user.last_name
+            self.fields["email"].initial = user.email
+            self.fields["phone"].initial = user.phone
+        else:
+            print ("No user")
 class ContactForm(forms.ModelForm):
     class Meta:
         model = UserInquiry
