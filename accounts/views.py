@@ -16,6 +16,10 @@ class ContactInquiryCreateView(CreateView):
     form_class = ContactInquiryForm
     template_name = "accounts/contact_form.html"
     success_url = reverse_lazy("accounts:contact-dashboard")
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         form.instance.posted_by = self.request.user
@@ -72,8 +76,11 @@ class ContactInquiryDetailView(DetailView):
 @method_decorator(login_required, name="dispatch")
 class ContactInquiryDeleteView(DeleteView):
     model = UserInquiry
+
     template_name = "accounts/contact_delete_confirm.html"
     success_url = reverse_lazy("accounts:contact-dashboard")
+
+
 
     def dispatch(self, request, *args, **kwargs):
         inquiry = self.get_object()
