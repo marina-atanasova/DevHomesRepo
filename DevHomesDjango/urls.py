@@ -12,6 +12,7 @@ urlpatterns = [
     path("listings/", include("Listings.urls")),
     path("", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("", include("CreditCalculator.urls")),
-
-
+    path("users/", include("users.urls")),
 ]
+
+handler403 = "core.views.custom_403"

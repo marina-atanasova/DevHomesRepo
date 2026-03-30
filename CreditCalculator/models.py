@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from Listings.models import Property
@@ -6,6 +7,13 @@ from Listings.models import Property
 # Create your models here.
 
 class CreditRequest(models.Model):
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='credit_requests',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     property_price = models.FloatField()
     interest_rate = models.FloatField()

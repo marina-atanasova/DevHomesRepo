@@ -1,10 +1,17 @@
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, DeleteView
+
+from users.decorators import allowed_groups
+from users.models import UserRole
 from .forms import PropertyForm
 from django.shortcuts import render
 from .models import Property, Amenity
@@ -63,23 +70,45 @@ class PropertyDetailView(DetailView):
     model = Property
     template_name = "Listings/property_detail.html"
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class AddListingView(CreateView):
     model = Property
     form_class = PropertyForm
     template_name = "Listings/add_listing.html"
     success_url = "/listings"
 
+    def form_valid(self, form):
+        form.instance.broker = self.request.user
+        return super().form_valid(form)
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class EditListingView(UpdateView):
     model = Property
     form_class = PropertyForm
     template_name = "Listings/edit_listing.html"
     success_url = "/listings"
 
+    def dispatch(self, request, *args, **kwargs):
+        listing = self.get_object()
+
+        if request.user.is_superuser or listing.broker == request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied
+
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class DeleteListingView(DeleteView):
     model = Property
     success_url = "/listings"
     template_name = "Listings/delete_listing.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        listing = self.get_object()
+
+        if request.user.is_superuser or listing.broker == request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied
 
 
 class AmenityListView(ListView):
@@ -90,6 +119,7 @@ class AmenityListView(ListView):
     paginate_by = 6
 
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class AmenityCreateView(CreateView):
     model = Amenity
     form_class = AmenityForm
@@ -97,12 +127,14 @@ class AmenityCreateView(CreateView):
     success_url = '/listings/amenities'
 
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class AmenityDetailView(DetailView):
     model = Amenity
     template_name = "Listings/amenity_detail.html"
     context_object_name = "amenity"
 
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class AmenityUpdateView(UpdateView):
     model = Amenity
     form_class = AmenityForm
@@ -110,7 +142,27 @@ class AmenityUpdateView(UpdateView):
     success_url = '/listings/amenities'
 
 
+@method_decorator(allowed_groups(["Broker"]), name="dispatch")
 class AmenityDeleteView(DeleteView):
     model = Amenity
     template_name = "Listings/amenity_confirm_delete.html"
     success_url = '/listings/amenities'
+
+
+@login_required
+def toggle_favorite(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+
+    if request.user.role not in [UserRole.CUSTOMER, UserRole.BROKER]:
+        return HttpResponseForbidden("Only registered users can favorite listings.")
+
+    if property_obj in request.user.favorite_properties.all():
+        request.user.favorite_properties.remove(property_obj)
+    else:
+        request.user.favorite_properties.add(property_obj)
+
+    return redirect("listings:detail", pk=pk)
+
+
+from django.contrib.auth.decorators import login_required
+

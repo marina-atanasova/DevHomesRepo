@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)r-8hywu+xvw@v1jk#)&$eo9w8f#so1+-63$w3sfp5l&h*dd)r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
@@ -49,8 +49,15 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'accounts',
     'CreditCalculator',
+    'users',
 
 ]
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,7 +96,7 @@ WSGI_APPLICATION = 'DevHomesDjango.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": 'retakedevhomes',
+        "NAME": 'devhomesadvanced',
         "USER": 'postgres',
         "PASSWORD": '123456',
         "HOST": "localhost",
@@ -133,3 +140,5 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+

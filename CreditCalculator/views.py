@@ -13,10 +13,9 @@ def calculator_view(request):
     form = CreditCalculator(request.GET or None)
     context = {"form": form}
 
-    print("GET:", request.GET)
-    print("VALID:", form.is_valid(), "ERRORS:", form.errors)
 
     if request.GET and form.is_valid():
+        created_by = request.user if request.user.is_authenticated else None,
         property_price = form.cleaned_data.get("property_price")
         interest_rate_yearly = form.cleaned_data.get("interest_rate_yearly")
         self_funded_sum = form.cleaned_data.get("self_funded_sum")
@@ -30,6 +29,8 @@ def calculator_view(request):
             down_payment=self_funded_sum,
             repayment_years=repayment_years,
             linked_property=linked_property,
+            created_by = request.user if request.user.is_authenticated else None
+
         )
 
         monthly_payment = calculator(property_price, interest_rate_yearly, self_funded_sum, repayment_years)

@@ -5,7 +5,11 @@
 <div class="top_of_page_content">
     <h1>All Amenities</h1>
     <p>Amenities can be attached to listings through the many-to-many field.</p>
-    <a class="btn" href="{% url 'listings:add_amenity' %}">Add Amenity</a>
+    {% if user.is_authenticated %}
+        {% if user.is_superuser or user.groups.all.0.name == "Broker" %}
+            <a href="{% url 'amenity-create' %}">Add amenity</a>
+        {% endif %}
+    {% endif %}
 </div>
 
 {% if amenities %}
