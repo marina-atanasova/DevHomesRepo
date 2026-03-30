@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Early Repayment Calculator | DevHomes{% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <h1>Early Repayment Calculator</h1>
+
+  <form method="get">
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+
+        {% if field.help_text %}
+          <small>{{ field.help_text }}</small>
+        {% endif %}
+
+        {% if field.errors %}
+          <div class="errors">{{ field.errors }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <button class="btn" type="submit">Calculate</button>
+  </form>
+</div>
+
+{% if original and early %}
+
+  <div class="results-highlight-grid">
+    <div class="card highlight-card">
+      <h2>Total Money Saved</h2>
+      <div class="highlight-number">{{ savings.total_paid_saved|floatformat:2 }} EUR</div>
+    </div>
+
+    <div class="card highlight-card">
+      <h2>New Repayment Time</h2>
+      <div class="highlight-number">{{ early.years }}y {{ early.remaining_months }}m</div>
+    </div>
+    <div class="card highlight-card">
+      <h2>Interest Saved</h2>
+      <div class="highlight-number">{{ savings.interest_saved|floatformat:2 }} EUR</div>
+    </div>
+
+  </div>
+
+  <div class="comparison-grid">
+    <div class="card">
+      <h2>Original Plan</h2>
+      <p><strong>Total paid:</strong> {{ original.total_paid|floatformat:2 }} EUR</p>
+      <p><strong>Interest + insurance + fees:</strong> {{ original.extra_costs_total|floatformat:2 }} EUR</p>
+      <p><strong>Total interest:</strong> {{ original.total_interest|floatformat:2 }} EUR</p>
+      <p><strong>Total life insurance:</strong> {{ original.total_life_insurance|floatformat:2 }} EUR</p>
+      <p><strong>Total property insurance:</strong> {{ original.total_property_insurance|floatformat:2 }} EUR</p>
+      <p><strong>Total bank fees:</strong> {{ original.total_bank_fees|floatformat:2 }} EUR</p>
+      <p><strong>Total repayment time:</strong> {{ original.years }} years and {{ original.remaining_months }} months</p>
+    </div>
+
+    <div class="card">
+      <h2>New Payment Plan</h2>
+      <p><strong>Total paid:</strong> {{ early.total_paid|floatformat:2 }} EUR</p>
+      <p><strong>Interest + insurance + fees:</strong> {{ early.extra_costs_total|floatformat:2 }} EUR</p>
+      <p><strong>Total interest:</strong> {{ early.total_interest|floatformat:2 }} EUR</p>
+      <p><strong>Total life insurance:</strong> {{ early.total_life_insurance|floatformat:2 }} EUR</p>
+      <p><strong>Total property insurance:</strong> {{ early.total_property_insurance|floatformat:2 }} EUR</p>
+      <p><strong>Total bank fees:</strong> {{ early.total_bank_fees|floatformat:2 }} EUR</p>
+      <p><strong>Total repayment time:</strong> {{ early.years }} years and {{ early.remaining_months }} months</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Savings Breakdown</h2>
+    <p><strong>Total saved:</strong> {{ savings.total_paid_saved|floatformat:2 }} EUR</p>
+    <p><strong>Interest + insurance + fees saved:</strong> {{ savings.extra_costs_saved|floatformat:2 }} EUR</p>
+    <p><strong>Interest saved:</strong> {{ savings.interest_saved|floatformat:2 }} EUR</p>
+    <p><strong>Life insurance saved:</strong> {{ savings.life_insurance_saved|floatformat:2 }} EUR</p>
+    <p><strong>Property insurance saved:</strong> {{ savings.property_insurance_saved|floatformat:2 }} EUR</p>
+    <p><strong>Bank fees saved:</strong> {{ savings.bank_fees_saved|floatformat:2 }} EUR</p>
+  </div>
+
+  <div class="card">
+    <h2>Assumptions Used</h2>
+    <p><strong>Life insurance monthly:</strong> {{ original.life_insurance_monthly_used|floatformat:2 }} EUR
+      {% if original.used_default_life %}(estimated){% endif %}
+    </p>
+    <p><strong>Property insurance yearly:</strong> {{ original.property_insurance_yearly_used|floatformat:2 }} EUR
+      {% if original.used_default_property %}(estimated){% endif %}
+    </p>
+    <p><strong>Bank servicing fee yearly:</strong> {{ original.bank_fee_rate_yearly_used_percent|floatformat:2 }}%
+      {% if original.used_default_bank_fee %}(estimated){% endif %}
+    </p>
+  </div>
+{% endif %}
+
+{% endblock %}

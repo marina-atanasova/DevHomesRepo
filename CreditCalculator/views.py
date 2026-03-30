@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from CreditCalculator.forms import CreditCalculator, calculator
+from CreditCalculator.calculations import calculate_early_repayment_comparison
+from CreditCalculator.forms import CreditCalculator, calculator, EarlyRepaymentCalculatorForm
 from CreditCalculator.models import CreditRequest
 
 
@@ -42,6 +43,28 @@ def calculator_view(request):
         })
 
     return render(request, "CreditCalculator/calculator.html", context)
+
+def early_repayment_calculator_view(request):
+    form = EarlyRepaymentCalculatorForm(request.GET or None)
+    context = {"form": form}
+
+    if request.GET and form.is_valid():
+        try:
+            results = calculate_early_repayment_comparison(
+                principal=form.cleaned_data["current_principal"],
+                yearly_interest_rate=form.cleaned_data["yearly_interest_rate"],
+                monthly_payment=form.cleaned_data["monthly_payment"],
+                early_monthly_payment=form.cleaned_data["early_monthly_payment"],
+                life_insurance_monthly=form.cleaned_data.get("life_insurance_monthly"),
+                property_insurance_yearly=form.cleaned_data.get("property_insurance_yearly"),
+                bank_fee_rate_yearly=form.cleaned_data.get("bank_fee_rate_yearly"),
+            )
+            context.update(results)
+        except ValueError as exc:
+            form.add_error(None, str(exc))
+
+    return render(request, "CreditCalculator/early_repayment_calculator.html", context)
+
 
 class AllCreditRequests(generic.ListView):
     model = CreditRequest
