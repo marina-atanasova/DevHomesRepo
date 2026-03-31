@@ -1,35 +1,24 @@
-{% extends "base.html" %}
+{% extends "includes/base_confirm_delete.html" %}
 
-{% block title %}Delete Inquiry | DevHomes{% endblock %}
+{% block delete_message %}
+  Are you sure you want to delete the listing
+  <strong>{{ object.name }}</strong>?
+  This action cannot be undone.
+{% endblock %}
 
-{% block content %}
-<div class="card">
-  <h1>Delete Inquiry</h1>
-  <p>
-    Are you sure you want to delete the listing
-    <strong>{{ object.name }}</strong>?
-    This action cannot be undone.
-  </p>
-
-  <hr class="divider">
-
+{% block delete_details %}
   <p>
     <strong>Price:</strong> {{ object.price }} ·
     <strong>Type:</strong> {{ object.property_type }} ·
-    <strong>ID:</strong> {{ object.pk}}
+    <strong>ID:</strong> {{ object.pk }}
   </p>
-
+    <p>
+        <strong>Broker:</strong> {{ object.broker }}
+        <strong>Address:</strong> {{ object.address }}
+    </p>
   <p>
-    <strong>Description:</strong> {{object.description}}
+    <strong>Description:</strong> {{ object.description }}
   </p>
-
-  <div class="row-end mt-14">
-    <form method="post">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Yes, delete</button>
-    </form>
-
-    <a class="btn btn-muted" href="{% url 'listings:all' %}">Cancel</a>
-  </div>
-</div>
 {% endblock %}
+
+{% block cancel_url %}{% url 'listings:all' %}{% endblock %}

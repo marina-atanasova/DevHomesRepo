@@ -8,4 +8,6 @@ urlpatterns = [
     path("credit/", views.calculator_view, name="credit"),
     path("credit/all/", views.AllCreditRequests.as_view(), name="credit_all"),
     path("credit/<int:pk>/delete", DeleteCreditRequest.as_view(), name="credit_delete"),
+    path("credit/early-repayment/", views.early_repayment_calculator_view, name="credit_early_repayment"),
+
 ]

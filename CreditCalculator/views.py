@@ -1,8 +1,12 @@
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
 
-from CreditCalculator.forms import CreditCalculator, calculator
+from CreditCalculator.calculations import calculate_early_repayment_comparison
+from CreditCalculator.forms import CreditCalculator, calculator, EarlyRepaymentCalculatorForm
 from CreditCalculator.models import CreditRequest
 
 
@@ -43,12 +47,50 @@ def calculator_view(request):
 
     return render(request, "CreditCalculator/calculator.html", context)
 
+def early_repayment_calculator_view(request):
+    form = EarlyRepaymentCalculatorForm(request.GET or None)
+    context = {"form": form}
+
+    if request.GET and form.is_valid():
+        try:
+            results = calculate_early_repayment_comparison(
+                principal=form.cleaned_data["current_principal"],
+                yearly_interest_rate=form.cleaned_data["yearly_interest_rate"],
+                monthly_payment=form.cleaned_data["monthly_payment"],
+                early_monthly_payment=form.cleaned_data["early_monthly_payment"],
+                life_insurance_monthly=form.cleaned_data.get("life_insurance_monthly"),
+                property_insurance_yearly=form.cleaned_data.get("property_insurance_yearly"),
+                bank_fee_rate_yearly=form.cleaned_data.get("bank_fee_rate_yearly"),
+            )
+            context.update(results)
+        except ValueError as exc:
+            form.add_error(None, str(exc))
+
+    return render(request, "CreditCalculator/early_repayment_calculator.html", context)
+
+
 class AllCreditRequests(generic.ListView):
     model = CreditRequest
     context_object_name = "credit_requests"
     template_name = "CreditCalculator/credit_all.html"
 
+@method_decorator (login_required, name="dispatch")
 class DeleteCreditRequest(generic.DeleteView):
     model = CreditRequest
     template_name = "CreditCalculator/credit_delete.html"
     success_url = reverse_lazy("CreditCalculator:credit_all")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Credit Request"
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        credit_request = self.get_object()
+        is_owner = credit_request.created_by == request.user
+
+
+        if request.user.is_superuser or is_owner:
+            return super().dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied

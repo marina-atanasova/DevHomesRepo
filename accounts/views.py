@@ -80,7 +80,10 @@ class ContactInquiryDeleteView(DeleteView):
     template_name = "accounts/contact_delete_confirm.html"
     success_url = reverse_lazy("accounts:contact-dashboard")
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Inquiry"
+        return context
 
     def dispatch(self, request, *args, **kwargs):
         inquiry = self.get_object()

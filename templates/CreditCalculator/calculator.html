@@ -8,17 +8,40 @@
   <h1>Credit Calculator</h1>
 
   <form method="get">
-  {{ form.errors }}
-{{ form.non_field_errors }}
-    {% for field in form %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
+    {{ form.errors }}
+    {{ form.non_field_errors }}
 
-        {% if field.errors %}
-          <div class="errors">{{ field.errors }}</div>
-        {% endif %}
-      </div>
+    <div class="form-group">
+      <label for="id_linked_property">{{ form.linked_property.label }}</label>
+      <select name="linked_property" id="id_linked_property">
+        <option value="">Select property (optional)</option>
+        {% for property in form.fields.linked_property.queryset %}
+          <option
+            value="{{ property.id }}"
+            data-price="{{ property.price }}"
+            {% if form.linked_property.value|stringformat:"s" == property.id|stringformat:"s" %}selected{% endif %}
+          >
+            {{ property.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      {% if form.linked_property.errors %}
+        <div class="errors">{{ form.linked_property.errors }}</div>
+      {% endif %}
+    </div>
+
+    {% for field in form %}
+      {% if field.name != "linked_property" %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+
+          {% if field.errors %}
+            <div class="errors">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
     {% endfor %}
 
     <button class="btn" type="submit">Calculate</button>
@@ -33,5 +56,28 @@
   </div>
 {% endif %}
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const propertySelect = document.getElementById("id_linked_property");
+  const priceInput = document.getElementById("id_property_price");
+
+  function populatePropertyPrice() {
+    const selectedOption = propertySelect.options[propertySelect.selectedIndex];
+
+    if (!selectedOption || !selectedOption.value) {
+      priceInput.value = "";
+      return;
+    }
+
+    const price = selectedOption.dataset.price || "";
+    priceInput.value = price;
+  }
+
+  propertySelect.addEventListener("change", populatePropertyPrice);
+
+  // also populate on page load if a property is already selected
+  populatePropertyPrice();
+});
+</script>
 
 {% endblock %}
