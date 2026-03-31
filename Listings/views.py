@@ -102,6 +102,11 @@ class DeleteListingView(DeleteView):
     success_url = "/listings"
     template_name = "Listings/delete_listing.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Listing"
+        return context
+
     def dispatch(self, request, *args, **kwargs):
         listing = self.get_object()
 
@@ -147,6 +152,10 @@ class AmenityDeleteView(DeleteView):
     model = Amenity
     template_name = "Listings/amenity_confirm_delete.html"
     success_url = '/listings/amenities'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Amenity"
+        return context
 
 
 @login_required

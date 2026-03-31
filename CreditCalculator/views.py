@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
 
 from CreditCalculator.calculations import calculate_early_repayment_comparison
@@ -71,7 +74,23 @@ class AllCreditRequests(generic.ListView):
     context_object_name = "credit_requests"
     template_name = "CreditCalculator/credit_all.html"
 
+@method_decorator (login_required, name="dispatch")
 class DeleteCreditRequest(generic.DeleteView):
     model = CreditRequest
     template_name = "CreditCalculator/credit_delete.html"
     success_url = reverse_lazy("CreditCalculator:credit_all")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Delete Credit Request"
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        credit_request = self.get_object()
+        is_owner = credit_request.created_by == request.user
+
+
+        if request.user.is_superuser or is_owner:
+            return super().dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied

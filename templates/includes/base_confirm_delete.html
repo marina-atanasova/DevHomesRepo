@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} | DevHomes{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>{{ page_title }}</h1>
+
+  <p>
+    {% block delete_message %}{% endblock %}
+  </p>
+
+  <hr class="divider">
+
+  {% block delete_details %}{% endblock %}
+
+  <div class="row-end mt-14">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        {% block delete_button_text %}Yes, delete{% endblock %}
+      </button>
+    </form>
+
+    <a class="btn btn-muted" href="{% block cancel_url %}#{% endblock %}">Cancel</a>
+  </div>
+</div>
+{% endblock %}
