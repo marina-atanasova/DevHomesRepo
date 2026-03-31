@@ -32,6 +32,10 @@
 
 {% if original and early %}
 
+<a class="btn btn-accent" href="{% url 'CreditCalculator:credit_early_repayment_report_pdf' %}?{{ request.GET.urlencode }}">
+        Download PDF Report
+      </a>
+
   <div class="results-highlight-grid">
     <div class="card highlight-card">
       <h2>Total Money Saved</h2>
@@ -46,7 +50,6 @@
       <h2>Interest Saved</h2>
       <div class="highlight-number">{{ savings.interest_saved|floatformat:2 }} EUR</div>
     </div>
-
   </div>
 
   <div class="comparison-grid">
@@ -95,6 +98,11 @@
       {% if original.used_default_bank_fee %}(estimated){% endif %}
     </p>
   </div>
+    <div class="card">
+      <a class="btn btn-accent" href="{% url 'CreditCalculator:credit_early_repayment_report_pdf' %}?{{ request.GET.urlencode }}">
+        Download PDF Report
+      </a>
+    </div>
 {% endif %}
 
 {% endblock %}

@@ -1,13 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import generic
 
 from CreditCalculator.calculations import calculate_early_repayment_comparison
 from CreditCalculator.forms import CreditCalculator, calculator, EarlyRepaymentCalculatorForm
 from CreditCalculator.models import CreditRequest
+from CreditCalculator.pdf_reports import build_early_repayment_pdf
 
 
 # Create your views here.
@@ -94,3 +97,28 @@ class DeleteCreditRequest(generic.DeleteView):
             return super().dispatch(request, *args, **kwargs)
 
         raise PermissionDenied
+
+
+def early_repayment_report_pdf_view(request):
+    form = EarlyRepaymentCalculatorForm(request.GET or None)
+
+    if not request.GET or not form.is_valid():
+        return HttpResponse("Invalid data for PDF report.", status=400)
+
+    results = calculate_early_repayment_comparison(
+        principal=form.cleaned_data["current_principal"],
+        yearly_interest_rate=form.cleaned_data["yearly_interest_rate"],
+        monthly_payment=form.cleaned_data["monthly_payment"],
+        early_monthly_payment=form.cleaned_data["early_monthly_payment"],
+        life_insurance_monthly=form.cleaned_data.get("life_insurance_monthly"),
+        property_insurance_yearly=form.cleaned_data.get("property_insurance_yearly"),
+        bank_fee_rate_yearly=form.cleaned_data.get("bank_fee_rate_yearly"),
+    )
+
+    pdf_bytes = build_early_repayment_pdf(results, form.cleaned_data)
+
+    filename = f"early_repayment_report_{timezone.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+
+    response = HttpResponse(pdf_bytes, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
